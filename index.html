@@ -1713,7 +1713,7 @@ gap:5%;padding:5.5% 7%;align-items:center;
  font:600 clamp(17px,2.2vw,24px)/1.4 "Yu Mincho","Hiragino Mincho ProN",serif;
  letter-spacing:.1em;color:#f1e4cf;background:linear-gradient(145deg,#172432f5,#101921f4);
  border:1px solid #bba07b;border-radius:5px;box-shadow:0 12px 38px #0006,inset 0 1px #ffffff14;
- transition:transform .22s ease,opacity .22s ease}
+ transition:transform .15s ease,opacity .15s ease}
 #world-locked-notice458.visible458{transform:translate(-50%,-50%) scale(1);opacity:1}
 @media(prefers-reduced-motion:reduce){#world-locked-notice458{transition:none}}
 </style>
@@ -2483,6 +2483,7 @@ const ATTACKS103={
  mizu:{wave:['浸略','国の海になりなむとするか'],rain:['祈雨','忽に神なり雨くだりて'],both:['壊劫','終りてはまた始まり']},
  masu:[['貴賤','ふりぬる代々の跡にかさねん']]
 };
+// [V465] 建礼門院右京大夫集は無名の弾幕。技名宣言・常設HUD・宣言音を省略し、雪の逢瀬や戦闘は維持。
 // [V464] 井原西鶴の3作品と堺市第二話の残り5作品。採用技名8件・補助HUD表示・明朝体を更新。
 // [V463] 金槐和歌集4、平家物語4、記紀7の採用技名15件。古事記4箇所は武田祐吉の訓読を採用。
 // [V462] 9作品の採用済み技名35件を改訂。伊勢の「闇火」は保留につき維持。方丈記救援は技扱いしない。
@@ -2503,13 +2504,13 @@ const SPELL_NAMES448={
  sanetomo217:[["海天","海や空ともえぞわかぬ","原"],["砕歌","われてくだけて裂けて散るかも","原","shatter"],["常世","世の中は常にもがもな","原"],["憂世","憂しとやいはむ、あはれとやいはむ","原"]],
  habikino279:[["海計","吾と汝と競ひて族の多き少きを計らむ","原"],["八首","そが目は赤かがちの如くにして","原"],["原界","天地未剖、陰陽不分","原"],["禊生","生みの終はてに三柱の貴子を得たり","原"],["陰陽","並是質性明麗、故使照臨天地","原"],["神宴","また八百万の神もろもろ咲（わら）ふ","原"],["記紀","一書曰、天地初判","原"]],
  heike:[["戦火","暗さは暗し、火を出だせ","原"],["戦情","何処に刀を立つべしとも覚えず","原"],["扇舞","扇は空へぞ揚がりける","原"],["海帝","波の底にも都の候ふぞ","原"]],
- ukyo217:[['追慕','雪のあしたはなほぞ恋しき','原','snow']],
+ ukyo217:[], // [V465] 建礼門院右京大夫集は意図的に技名を持たない。
  saikaku:[["複利","一年一倍の算用に積もり","原"],["幻銀","中には世間に沢山なる石瓦","原"]],
  sakai314:[["行色","行方知れず成にけり","原"],["一炊","わづかにあわ餅一うすの内","原"],["花愁","花の笑顔に愁の目元","原"],["討入","表門より入れ入れ入れ","原","charge"],["虚構","昨日の花は今日の夢","原"],["虚砲","評判評判","原"]],
 };
 const SPELL_SOURCE_LABEL449={原:'原典本文より',題:'原典の章題より',語:'原典の語句より',案:'原典に着想した創作',要:'原典と照合中の候補'};
 function spellInfo448(g,boss,a){
- if(!boss||!a)return null;
+ if(!boss||!a||boss.key==='ukyo217')return null; // [V465] 固有宣言・宣言音・背景演出を発生させない
  const key=boss.key,raw=String(a.id||''),id=raw.substring(raw.lastIndexOf(':')+1),num=Number(id);
  let index=Number.isInteger(num)?num:0;
  if(key==='chomei217'&&index===3)return null; // [V462] 菅原孝標女の救援は技ではなく演出
@@ -2636,7 +2637,7 @@ function hudBoss103(g){
  if(!key)return null;return{key,b,hp,maxHp,phase,phases,...BOSS_META103[key],...(key==='saikaku'?{alias:['日本永代蔵','世間胸算用'][phase]}:{})};
 }
 function hudAttack103(g,boss=hudBoss103(g)){
- if(!boss)return null;if(g.sakai314){const idx=g.sakai314.phase,row=SPELL_NAMES448.sakai314[idx];return {id:'sakai314:'+idx,tag:row?.[0]||boss.work,quote:row?.[1]||'',detail:''};}if(g.habikino279)return window.__habikino279.attack(g);if(['sanetomo217','ukyo217','chomei217'].includes(boss.key))return window.__ui217?.attack(g,boss)||null;const b=boss.b,key=boss.key;let pair,id,detail='';
+ if(!boss||boss.key==='ukyo217')return null; /* [V465] 常設HUDと読み上げからも技名を省く */if(g.sakai314){const idx=g.sakai314.phase,row=SPELL_NAMES448.sakai314[idx];return {id:'sakai314:'+idx,tag:row?.[0]||boss.work,quote:row?.[1]||'',detail:''};}if(g.habikino279)return window.__habikino279.attack(g);if(['sanetomo217','ukyo217','chomei217'].includes(boss.key))return window.__ui217?.attack(g,boss)||null;const b=boss.b,key=boss.key;let pair,id,detail='';
  if(key==='heike'){id=b.phase;pair=[["戦火","暗さは暗し、火を出だせ"],["戦情","何処に刀を立つべしとも覚えず"],["扇舞","扇は空へぞ揚がりける"],["海帝","波の底にも都の候ふぞ"]][id];}
  else if(key==='saikaku'){id=b.phase;pair=[["複利","一年一倍の算用に積もり"],["幻銀","中には世間に沢山なる石瓦"]][id];}
  else if(key==='kenko'){id=b.pattern;pair=[window.__kenkoBridge149.tags[id],window.__kenkoBridge149.quotes[id]];}
@@ -7390,7 +7391,7 @@ function chainQuiet413(g){return !!(g&&(g.mode==='rushClearing'||g.mode==='rushB
   (g.sakai314&&(g.sakai314.swap!=null||g.sakai314.voyage316?.outro!=null||g.sakai314.dream320?.wake!=null||g.sakai314.plum321?.outro!=null||g.sakai314.ronin323?.outro!=null))||
   g.saikaku163?.swap!=null||g.heike181?.transition!=null||(g.chainPhase413&&g.heike181?.pt<.36)));}
 
-function renderScene(c,g,background){if(screen==='prologueExit'||!g&&screen==='prologue'){paintStoryDestination158(c);return;}if(g?.sakai314){drawSakaiBattle314(c,g);}else if(g?.habikino279){drawHabikinoBattle279(c,g);}else if(g?.habikino275){render(c,g,habikinoBattleBackground275(g));}else if(g?.sanetomo211){render(c,g,destinationBackdrop158('27221'));}else if(g?.chomei201){c.save();const camera=cCamera203(g.chomei201);c.translate(640+camera.x,400+camera.y);c.scale(camera.zoom,camera.zoom);c.translate(-640,-400);render(c,g,destinationBackdrop158('27221'));c.restore();}else if(g?.heike181)render(c,g,H181.background);else if(g?.ukyo189)render(c,g,H181.background);else if(g?.saikaku163)render(c,g,S163.background);else if(g?.kenko149)render(c,g,K149.background);else if(g?.kyokai131)render(c,g,KYOKAI131.background);else if(g?.chapter===2&&g.rush)drawMirrorRushScene(c,g);else if(g?.chapter===2&&g.ookagami)drawMirrorScene(c,g);else if(g?.chapter===2)drawStage2Map(c,g);else render(c,g,background);drawDamageFeedback(c,g);if(['play','paused'].includes(screen)){if(g.kenko149&&!g.cutin&&g.kenko149.defeat===null){c.save();const v=c.createLinearGradient(0,80,0,205);v.addColorStop(0,'#081421aa');v.addColorStop(.7,'#08142188');v.addColorStop(1,'#08142100');c.fillStyle=v;c.fillRect(260,80,760,125);c.restore();}drawSharedHud103(c,g);if(g.sanetomo211)drawSanetomoHud214(c,g);drawPowerPickupEffects105(c,g);drawCommon134(c,g);drawPowerLoss137(c,g);drawBattleDialogue162(c,g);drawStageNote217(c,g);}drawChainVeil413(c,g);}
+function renderScene(c,g,background){if(screen==='prologueExit'||!g&&screen==='prologue'){paintStoryDestination158(c);return;}if(g?.sakai314){drawSakaiBattle314(c,g);}else if(g?.habikino279){drawHabikinoBattle279(c,g);}else if(g?.habikino275){render(c,g,habikinoBattleBackground275(g));}else if(g?.sanetomo211){render(c,g,destinationBackdrop158('27221'));}else if(g?.chomei201){c.save();const camera=cCamera203(g.chomei201);c.translate(640+camera.x,400+camera.y);c.scale(camera.zoom,camera.zoom);c.translate(-640,-400);render(c,g,destinationBackdrop158('27221'));c.restore();}else if(g?.heike181)render(c,g,H181.background);else if(g?.ukyo189)render(c,g,H181.background);else if(g?.saikaku163)render(c,g,S163.background);else if(g?.kenko149)render(c,g,K149.background);else if(g?.kyokai131)render(c,g,KYOKAI131.background);else if(g?.chapter===2&&g.rush)drawMirrorRushScene(c,g);else if(g?.chapter===2&&g.ookagami)drawMirrorScene(c,g);else if(g?.chapter===2)drawStage2Map(c,g);else render(c,g,background);drawDamageFeedback(c,g);if(['play','paused'].includes(screen)){if(g.kenko149&&!g.cutin&&g.kenko149.defeat===null){c.save();const v=c.createLinearGradient(0,80,0,205);v.addColorStop(0,'#081421aa');v.addColorStop(.7,'#08142188');v.addColorStop(1,'#08142100');c.fillStyle=v;c.fillRect(260,80,760,125);c.restore();}drawSharedHud103(c,g);if(g.sanetomo211)drawSanetomoHud214(c,g);drawPowerPickupEffects105(c,g);drawCommon134(c,g);if(g.sakai314?.phase===5)drawKyodenPickupFX468(c,g);drawPowerLoss137(c,g);drawBattleDialogue162(c,g);drawStageNote217(c,g);}drawChainVeil413(c,g);}
 function updateStage2UI(){byId('stage2-route').hidden=true;arena.classList.toggle('stage2-map',game?.chapter===2);}
 
 function start({bossOnly=false,iseOnly=false,transformOnly=false,poweredOnly=false,level=null,phase=0,finalPractice=false}={}){if(!ready)return;previewOnly106=false;enableAudio();if(overlayTimer){clearTimeout(overlayTimer);overlayTimer=null;}game=createGame({bossOnly,iseOnly:iseOnly||transformOnly,poweredOnly,cutins:true,flightStyle:controlSettings.flight});if(bossOnly&&phase>0)startBossPhase(game,phase);game.finalPractice=finalPractice;if(finalPractice){game.boss.volley=2;game.player.x=640;game.player.y=335;game.player.grounded=false;game.boss.fire=.15;}if(level!==null&&bossOnly){game.player.level=level;game.player.power=level-1;game.checkpoint=level;}if(transformOnly){game.ise.y=game.ise.homeY;game.player.x=500;startIseTransformation(game);}resetInput();setScreen('play');updateUI();handleEvents();}
@@ -8982,10 +8983,11 @@ function notifyWorldLocked458(){
  node.hidden=false;node.classList.remove('visible458');
  void node.offsetWidth;
  node.classList.add('visible458');
+ // [V469] 表示開始から0.50秒で完全消去（0.35秒表示＋0.15秒フェード）。
  worldLockedNoticeTimer458=setTimeout(()=>{
   node.classList.remove('visible458');
-  worldLockedNoticeTimer458=setTimeout(()=>{node.hidden=true;worldLockedNoticeTimer458=null;},220);
- },1450);
+  worldLockedNoticeTimer458=setTimeout(()=>{node.hidden=true;worldLockedNoticeTimer458=null;},150);
+ },350);
 }
 function selectWorldCity108(id,focus=false){
  const city=worldCityById108.get(id);if(!city)return false;
@@ -12752,7 +12754,7 @@ function loadSakaiPhaseAssets429(phase){
  else if(phase===2)tasks.push(loadPlum321());
  else if(phase===3)tasks.push(loadRonin323());
  else if(phase===4)tasks.push(loadSaraArt(),loadTane331());
- else if(phase===5)tasks.push(loadSakaiBookArt309(['kabayaki309']));
+ else if(phase===5)tasks.push(loadSakaiBookArt309(['kabayaki309']),loadKyoden466Sheet(),loadPowerItem105());
  const promise=Promise.all(tasks).then(()=>{
    // [V431] The Tanehiko stage needs two shared material masks: carriage + puppet.
    // Validate all masks before declaring the phase ready; do not throw in the render loop.
@@ -12899,12 +12901,17 @@ function stepSakaiBattle314(g,dt,controls={}){
   if(k.phase===5&&q.kyodenArc369&&q.vy>0&&q.y>=Engine.GROUND-13){
    q.y=Engine.GROUND-13;q.dead=true;kyoden371Burst(g,q.x,q.y,q.burstBeat371||0);continue;
   }
-  if(q.edoBurst371)q.angle+=q.spin371*dt;
+  if(q.edoBurst371&&!q.kyodenPickup467)q.angle+=q.spin371*dt;
   if(q.sway)q.y+=Math.cos((q.age-q.delay)*2)*q.sway*2*dt;
   if(q.unfold){q.w=60+170*sakaiEase312((q.age-q.delay)/.7);q.h=q.w*SAKAI_MATERIALS313[q.key].rect[3]/SAKAI_MATERIALS313[q.key].rect[2];q.hitW=q.w*.62;}
   if(q.dead)continue;
+  // [V467] 無敵中でも拾える。取得物は被弾・食べる判定に通さない。
+  if(q.kyodenPickup467){
+   if(kyoden467PickupTouch(q,prev,core))collectKyoden467Pickup(g,q);
+   continue;
+  }
   if(q.edible&&p.bite&&p.bite.t>.18&&p.bite.t<.42&&Engine.biteContains(p,{x:q.x,y:q.y,r:Math.min(q.hitW,q.hitH)/2})){q.dead=true;k.stats.eaten++;feed134(g,2);reaction134(g,'paper',q.x,q.y,q.w,q.h);continue;}
-  if(p.invuln<=0&&sakaiTouch314(q,prev,core)){q.dead=true;if(Engine.hurt(g,q))k.stats.hits++;}
+  if(p.invuln<=0&&(q.edoBurst371?kyoden466CircleTouch(q,prev,core):sakaiTouch314(q,prev,core))){q.dead=true;if(Engine.hurt(g,q))k.stats.hits++;}
  }
  k.objects=k.objects.filter(q=>!q.dead&&q.age<q.life&&q.x>-350&&q.y<850);k.stats.peak=Math.max(k.stats.peak,k.objects.length);
  for(const s of g.shots){s.px=s.x;s.py=s.y;s.x+=s.vx*dt;s.y+=s.vy*dt;s.age+=dt;
@@ -12937,48 +12944,162 @@ function drawKyoden368Paper(c,q){
  c.drawImage(im,-w/2,-h/2,w,h);c.restore();
 }
 
-const KYODEN371_EDO_IMAGES=[new Image(),new Image(),new Image(),new Image(),new Image(),new Image(),new Image(),new Image(),new Image(),new Image(),new Image(),new Image(),new Image(),new Image(),new Image(),new Image(),new Image(),new Image()];
-KYODEN371_EDO_IMAGES[0].src="https://lh3.googleusercontent.com/d/1Xxy5J9Ncy-gfCJX3kATpeEHfn7DcqL2E";
-KYODEN371_EDO_IMAGES[1].src="https://lh3.googleusercontent.com/d/1GK-tcPov2vDCzW85I3F1PGgFrkk2t2vw";
-KYODEN371_EDO_IMAGES[2].src="https://lh3.googleusercontent.com/d/1xF7VtPEqGh8DwpQDUKDSRLjvJdVt5kWt";
-KYODEN371_EDO_IMAGES[3].src="https://lh3.googleusercontent.com/d/1_zvGAPaq_6QUmvkrvsd5BFQxsLuns6Ez";
-KYODEN371_EDO_IMAGES[4].src="https://lh3.googleusercontent.com/d/1MpXiRSRLbHe7Hy4xBjdxVnFkwTFmpBxh";
-KYODEN371_EDO_IMAGES[5].src="https://lh3.googleusercontent.com/d/1LFLtLR4LS20pSCm4zf5RDayERds0orAV";
-KYODEN371_EDO_IMAGES[6].src="https://lh3.googleusercontent.com/d/1olbVStYzH70clCor7Aoccz90wSJna3-r";
-KYODEN371_EDO_IMAGES[7].src="https://lh3.googleusercontent.com/d/1KnQOcHqdTmByVE7e0QwjHz1YaqZ29hiX";
-KYODEN371_EDO_IMAGES[8].src="https://lh3.googleusercontent.com/d/16abyCHBZOTm6kMKkEI46Cgn7RcLcAd2m";
-KYODEN371_EDO_IMAGES[9].src="https://lh3.googleusercontent.com/d/1UzlH09gZh9zMQ_fu0p20AemxML53dPUI";
-KYODEN371_EDO_IMAGES[10].src="https://lh3.googleusercontent.com/d/1G5hDU8s_hEt_8aVRaNuSQe4JXpUiihEA";
-KYODEN371_EDO_IMAGES[11].src="https://lh3.googleusercontent.com/d/12rizIWzw7kBxjiJRrkFWH_SKXPe5DMyB";
-KYODEN371_EDO_IMAGES[12].src="https://lh3.googleusercontent.com/d/1B3R5ZrlMcs9DgKnnkeS5XPN8q2IrVN2H";
-KYODEN371_EDO_IMAGES[13].src="https://lh3.googleusercontent.com/d/1sIhl0KNvp-Xaowy0AcCXHgyUvvrFAoxc";
-KYODEN371_EDO_IMAGES[14].src="https://lh3.googleusercontent.com/d/1Vlcb1fQr_qjP6ImchSimkxCDwxyw63fH";
-KYODEN371_EDO_IMAGES[15].src="https://lh3.googleusercontent.com/d/1mNZ4aUmrT4Jajm8wj-Y3IkUOe8HG1ihF";
-KYODEN371_EDO_IMAGES[16].src="https://lh3.googleusercontent.com/d/1L5infaDCWv2crnTP6tMPmbxofTIsrPWl";
-KYODEN371_EDO_IMAGES[17].src="https://lh3.googleusercontent.com/d/1oBAfRBE0qACzcWhJFvXIMW3fby-MUsOn";
-
+// [V466] 京伝飛散弾：外部公開の正方形画像を4×4に切り出す。画像データはHTMLに含めない。
+const KYODEN466_SHEET_URL='https://lh3.googleusercontent.com/d/1E6casa0rclF-KqwV3IkXyTuBjj8rDqk6';
+let KYODEN466_SHEET=null,KYODEN466_SHEET_PENDING=null;
+function loadKyoden466Sheet(){
+ if(KYODEN466_SHEET?.complete&&KYODEN466_SHEET.naturalWidth>0)return Promise.resolve(true);
+ if(KYODEN466_SHEET_PENDING)return KYODEN466_SHEET_PENDING;
+ const im=new Image();KYODEN466_SHEET=im;
+ KYODEN466_SHEET_PENDING=new Promise((resolve,reject)=>{
+  im.onload=()=>{
+   if(im.naturalWidth!==im.naturalHeight||im.naturalWidth<64)reject(new Error('京伝の飛散弾画像は正方形の4×4シートにしてください。'));
+   else resolve(true);
+  };
+  im.onerror=()=>reject(new Error('京伝の飛散弾画像を読み込めません。Google Driveで「リンクを知っている全員」に閲覧を許可して再試行してください。'));
+  im.src=KYODEN466_SHEET_URL;
+ }).finally(()=>{KYODEN466_SHEET_PENDING=null;});
+ return KYODEN466_SHEET_PENDING;
+}
 function drawKyoden371Burst(c,q){
- const im=KYODEN371_EDO_IMAGES[q.edoSprite371];if(!im||!im.complete||!im.naturalWidth)return;
- const w=q.w,h=w*im.naturalHeight/im.naturalWidth;
- c.save();c.translate(q.x,q.y);c.rotate(q.angle||0);c.drawImage(im,-w/2,-h/2,w,h);c.restore();
+ const im=KYODEN466_SHEET;
+ if(!im?.complete||!im.naturalWidth)return;
+ const index=q.edoSprite371|0,col=index%4,row=Math.floor(index/4),tile=im.naturalWidth/4;
+ if(index<0||index>=16)return;
+ // セル境界から1.5px内側を使い、隣のマスのピクセル混入を防止。
+ const inset=Math.min(1.5,tile*.015),sw=tile-2*inset,w=q.w;
+ c.save();c.translate(q.x,q.y);c.rotate(q.angle||0);
+ c.drawImage(im,col*tile+inset,row*tile+inset,sw,sw,-w/2,-w/2,w,w);
+ c.restore();
+}
+// 飛散弾のみ、中心円＋自機中心5pxの連続衝突判定。拡縮と回転に左右されない。
+function kyoden466CircleTouch(q,prev,core){
+ const r=q.w*.19+5;
+ const ax=prev.x-q.px,ay=prev.y-q.py,bx=core.x-q.x,by=core.y-q.y;
+ const dx=bx-ax,dy=by-ay,d2=dx*dx+dy*dy;
+ const t=d2>1e-9?Math.max(0,Math.min(1,-(ax*dx+ay*dy)/d2)):0;
+ const x=ax+dx*t,y=ay+dy*t;
+ return x*x+y*y<=r*r;
+}
+// [V467] 京伝: 投擲軌道は従来どおり。破裂後の全16種の飛散弾と2種の取得物に同一速度倍率を適用。
+const KYODEN467_BURST_SPEED=[1,1.3,1.6,1.9,2.2,2.5,2.8,3];
+function kyoden467PickupTouch(q,prev,core){
+ // アイテム中心の取得円に、自機とアイテムの相対移動線分が接したら取得。
+ const r=q.w*.43+5,ax=q.px-prev.x,ay=q.py-prev.y,bx=q.x-core.x,by=q.y-core.y;
+ const dx=bx-ax,dy=by-ay,d2=dx*dx+dy*dy;
+ const t=d2>1e-9?Math.max(0,Math.min(1,-(ax*dx+ay*dy)/d2)):0;
+ return (ax+dx*t)**2+(ay+dy*t)**2<=r*r;
+}
+function collectKyoden467Pickup(g,q){
+ if(q.dead)return;
+ if(q.kyodenPickup467==='power'){
+  // 既存の勾玉取得・レベル上昇・カットイン演出を維持し、京伝専用の取得表示を追加。
+  if(collectPower105(g,q)){
+   const level=g.player.level||1,upgraded=g.powerPickups105?.at(-1)?.upgrade===true;
+   kyodenPickupNotice468(g,'power',upgraded?'火力アップ  Lv.'+level:'火力最大',level);
+  }
+  return;
+ }
+ if(q.kyodenPickup467==='life'){
+  q.dead=true;
+  const p=g.player,s=common134(g),previous=p.hp;
+  p.hp=Math.min(maxLives134(p),p.hp+1);
+  const healed=p.hp>previous;
+  s.fx.push({kind:'heal',x:q.x,y:q.y,age:0,life:healed?.65:.3,healed});
+  if(healed){s.healPulse=.65;s.healIndex136=previous;}
+  else g.score+=120;
+  sfx('heal441',{healed});
+  g.events.push({type:'kyodenHeart467',healed});
+  kyodenPickupNotice468(g,'life',healed?'ライフ回復 ＋1':'ライフ満タン',healed?previous:Math.max(0,p.hp-1));
+ }
+}
+// [V468] 京伝：取得の意味を一目で読める小型ポップ・光輪・HUD反応。
+// アイテム画像・フォント・SEは追加せず、既存の取得演出に重ねる。
+function kyodenPickupNotice468(g,type,label,index){
+ const k=g.sakai314;if(!k||k.phase!==5)return;
+ const hit=Engine.playerHitPoint(g.player,g.time);
+ k.pickupFX468??=[];
+ k.pickupFX468.push({type,label,index,x:hit.x,y:hit.y,at:g.time||0});
+ k.pickupFX468=k.pickupFX468.slice(-5);
+}
+function drawKyodenPickupFX468(c,g){
+ const k=g?.sakai314;if(!k||k.phase!==5||!k.pickupFX468?.length||g.cutin)return;
+ const now=g.time||0;
+ k.pickupFX468=k.pickupFX468.filter(f=>now-f.at<1.18);
+ const notices=k.pickupFX468;
+ for(let i=0;i<notices.length;i++){
+  const f=notices[i],age=Math.max(0,now-f.at),u=Math.min(1,age/1.18);
+  const alpha=Math.min(1,age/.1,Math.max(0,(1.18-age)/.36));
+  const life=f.type==='life',accent=life?'#ff9db8':'#f2cd7e';
+  c.save();c.globalAlpha=alpha;
+  c.strokeStyle=accent;c.lineWidth=2.8*(1-u)+.6;c.shadowColor=accent;c.shadowBlur=8*(1-u);
+  c.beginPath();c.arc(f.x,f.y,13+u*70,0,Math.PI*2);c.stroke();
+  c.shadowBlur=0;
+  for(let j=0;j<12;j++){
+   const a=Math.PI*2*j/12,inner=19+u*35,outer=inner+Math.max(1,13*(1-u));
+   c.beginPath();c.moveTo(f.x+Math.cos(a)*inner,f.y+Math.sin(a)*inner);
+   c.lineTo(f.x+Math.cos(a)*outer,f.y+Math.sin(a)*outer);c.stroke();
+  }
+  const x=clamp(f.x,125,1155),y=clamp(f.y-93-u*25-(notices.length-1-i)*38,116,Engine.GROUND-55);
+  c.font='bold 21px '+HUD103.sans;c.textAlign='center';c.textBaseline='middle';
+  const w=Math.min(315,c.measureText(f.label).width+36),h=41,r=15,l=x-w/2,t=y-h/2;
+  c.fillStyle='rgba(9,19,35,.85)';c.beginPath();c.moveTo(l+r,t);c.lineTo(l+w-r,t);c.quadraticCurveTo(l+w,t,l+w,t+r);
+  c.lineTo(l+w,t+h-r);c.quadraticCurveTo(l+w,t+h,l+w-r,t+h);c.lineTo(l+r,t+h);
+  c.quadraticCurveTo(l,t+h,l,t+h-r);c.lineTo(l,t+r);c.quadraticCurveTo(l,t,l+r,t);c.closePath();c.fill();
+  c.strokeStyle=accent;c.lineWidth=1.5;c.stroke();
+  c.fillStyle=life?'#ffe0e9':'#fff0c7';c.fillText(f.label,x,y,Math.max(50,w-22));
+  // 取得物に対応するHUDのライフ点／火力点も短く反応させる。
+  if(age<.78){
+   const hx=life?HUD144.life.dotsX+f.index*HUD144.life.step:HUD144.power.pipsX+(f.index-1)*HUD144.power.step+HUD144.power.width/2;
+   const hy=life?HUD144.life.y:HUD144.power.y+3;
+   const v=age/.78;c.globalAlpha=alpha*(1-v)*.9;c.shadowBlur=6;
+   c.beginPath();c.arc(hx,hy,11+v*24,0,Math.PI*2);c.stroke();
+  }
+  c.restore();
+ }
+}
+function drawKyoden467Pickup(c,q,time){
+ if(q.dead)return;
+ if(q.kyodenPickup467==='power'){
+  // 元からある勾玉アニメーション（追加画像なし）。
+  drawPowerItem105(c,q,time,q.w);
+  return;
+ }
+ // 共通の回復ハート画像を使用。読み込み待ち時のみ線で描く。
+ c.save();c.translate(q.x,q.y);
+ c.shadowColor='#f9a6ba';c.shadowBlur=13;
+ const w=q.w,im=C134.heart;
+ if(im?.complete&&im.naturalWidth)c.drawImage(im,-w/2,-w/2,w,w);
+ else{
+  c.fillStyle='#e88199';c.beginPath();c.moveTo(0,w*.35);
+  c.bezierCurveTo(-w*.56,-w*.02,-w*.42,-w*.36,0,-w*.17);
+  c.bezierCurveTo(w*.42,-w*.36,w*.56,-w*.02,0,w*.35);c.fill();
+ }
+ c.restore();
 }
 function kyoden371Burst(g,x,y,beat){
- const k=g.sakai314;const level=beat<4?0:beat<8?1:2;
+ const k=g.sakai314;const level=beat<3?0:beat<6?1:2;
  const count=[8,11,14][level];
+ const speedScale=KYODEN467_BURST_SPEED[Math.min(7,Math.max(0,beat))];
+ // 各投の合計数は維持し、ハートと勾玉を必ず各1個ずつ混ぜる。
+ const lifeIndex=Math.floor(count*.28),powerIndex=Math.floor(count*.71);
  // Upper semicircle, with a few shallow outward shots. Keep a readable angular gap.
  const gapCenter=.25+((beat*3)%5)*.35;
  for(let i=0;i<count;i++){
   let angle=Math.PI*.08+(i+.35)*Math.PI*.88/count;
   if(Math.abs(angle-gapCenter)<.16)angle+=.23;
-  const speed=(level===0?225:level===1?260:285)+(i%4)*19;
-  const sprite=(beat*7+i*5)%18;
+  const speed=((level===0?225:level===1?260:285)+(i%4)*19)*speedScale;
+  const pickup=i===lifeIndex?'life':i===powerIndex?'power':null;
+  const sprite=(beat*7+i*5)%16;
   const human=sprite<=2;
-  const width=human?67:sprite===11?68:sprite===4?55:38+(i%3)*7;
+  const width=pickup?50:human?67:sprite===11?68:sprite===4?55:38+(i%3)*7;
   const q=sakaiObject314(g,'paper',x,y,Math.cos(angle)*speed,-Math.sin(angle)*speed,width,{
-   delay:0,gravity:380+(i%4)*52,life:2.9,hitW:width*.62,hitH:width*.6,
-   edible:false,edoBurst371:true,edoSprite371:sprite,angle:(i%2?-.4:.4),spin371:(i%2?1:-1)*(2.1+(i%3)*1.2),
+   delay:0,gravity:380+(i%4)*52,life:2.9,hitW:width*.38,hitH:width*.38,
+   edible:false,edoBurst371:true,edoSprite371:sprite,angle:(i%2?-.4:.4),
+   spin371:pickup?0:(i%2?1:-1)*(2.1+(i%3)*1.2),
+   kyodenPickup467:pickup,targetPower:pickup==='power'?Math.min(4,(g.player.level||1)+1):0,
    born371:k.t,burstBeat371:beat
-  });q.age=q.delay;
+  });q.age=q.delay;q.h=width;
  }
  // Short paper-and-ink burst, purely visual.
  g.fx.push({kind:'kyodenBurst371',x,y,life:.38,max:.38});
@@ -13015,9 +13136,11 @@ function drawSakaiBattle314(c,g){
   if(!active&&!q.kyodenArc369){c.globalAlpha=.5;c.strokeStyle='#f4c77e';c.setLineDash([9,8]);c.beginPath();c.moveTo(q.x,Math.min(q.y,650));c.lineTo(Math.max(50,q.x-290),Math.min(q.y,650));c.stroke();c.setLineDash([]);}
   if(!active&&q.kyodenArc369){c.restore();continue;}
   const opt={ay:.5,alpha:active?1:.35,angle:q.angle,bend:['robe','ocho','yonehachi','smoke'].includes(q.key)?5:0,phase:q.age*.25};
-  if(phase===5&&q.edoBurst371&&active)drawKyoden371Burst(c,q);else if(phase===5&&q.key==='paper'&&active)drawKyoden368Paper(c,q);else if(q.unfold&&active)sakaiUnfold313(c,q.x,q.y,q.w,sakaiEase312((q.age-q.delay)/.7),Math.sin(q.age)*.07,1);else sakaiSprite313(c,q.key,q.x,q.y,q.w,opt);
+  if(phase===5&&q.kyodenPickup467&&active)drawKyoden467Pickup(c,q,g.time);else if(phase===5&&q.edoBurst371&&active)drawKyoden371Burst(c,q);else if(phase===5&&q.key==='paper'&&active)drawKyoden368Paper(c,q);else if(q.unfold&&active)sakaiUnfold313(c,q.x,q.y,q.w,sakaiEase312((q.age-q.delay)/.7),Math.sin(q.age)*.07,1);else sakaiSprite313(c,q.key,q.x,q.y,q.w,opt);
   c.restore();
  }
+ // [V467] 京伝戦での従来の勾玉ドロップも描画する。
+ if(phase===5)for(const item of g.items)drawPowerItem105(c,item,g.time);
  if(phase===4){
   c.save();c.translate(k.actor.x,k.actor.foot);c.scale(.85,.85);c.translate(-k.actor.x,-k.actor.foot);
   drawSakaiActor312(c,k.actor);c.restore();

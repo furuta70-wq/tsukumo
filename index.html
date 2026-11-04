@@ -2186,6 +2186,14 @@ gap:5%;padding:5.5% 7%;align-items:center;
 #world-map-screen108.is-departing414:after{content:"";position:fixed;inset:0;background:#11101b;z-index:80;pointer-events:none;animation:worldDepartFade414 .35s ease-in both}
 @keyframes worldDepartFade414{from{opacity:0}to{opacity:.96}}
 @media(prefers-reduced-motion:reduce){#world-map-screen108.is-entering414 .world-board108,#world-map-screen108 .world-sheet110,#world-map-screen108 .world-city-path108.is-picked414,#world-map-screen108 .world-marker110.is-picked414 .map-arrow220,#world-map-screen108 .world-marker110.atlas-new-marker136 .map-arrow220,#world-map-screen108 .world-marker110.atlas-new-marker136 .atlas-shop111{animation:none!important}#world-map-screen108.is-departing414:after{animation:none;opacity:.96}}
+/* Ver516: 選択時の一回限りの演出が、進行先矢印の常時アニメーションを上書きしないようにする。 */
+#world-map-screen108 .world-marker110.is-next113 .map-arrow220,
+#world-map-screen108 .world-marker110.is-next113.is-picked414 .map-arrow220,
+#world-map-screen108 .world-marker110.is-next113.atlas-new-marker136 .map-arrow220{
+ animation:mapArrow220 1.9s ease-in-out infinite!important;
+ animation-play-state:running!important;
+}
+@media(prefers-reduced-motion:reduce){#world-map-screen108 .world-marker110.is-next113 .map-arrow220{animation:none!important}}
 </style>
 <script>
 (()=>{'use strict';

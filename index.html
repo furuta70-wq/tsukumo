@@ -2045,6 +2045,14 @@ gap:5%;padding:5.5% 7%;align-items:center;
 #title-screen.navigation-fade512{animation:none}
 }
 </style>
+<style id="replay-shelf-parity515">
+/* The replay page uses the same navigation controls and sticky header as the book shelf. */
+#continue-screen106>.library-card106>.library-header106{position:sticky;top:-22px;z-index:8;background:#f3eddf;padding-top:18px;margin-top:-18px;box-shadow:0 8px 14px #f3eddf;gap:12px}
+#continue-screen106 .library-header106 .shelf-actions138 button{box-sizing:border-box!important;display:inline-flex!important;align-items:center;justify-content:center;gap:7px;min-height:48px!important;height:auto!important;min-width:120px;max-width:100%;padding:10px 17px!important;margin:0!important;border:1px solid #ab926e!important;border-radius:5px!important;background:linear-gradient(180deg,#344154,#1b293b)!important;color:#f2e7d1!important;box-shadow:0 3px 0 #101b26!important;font-family:var(--ui-type217);font-size:14px;white-space:nowrap}
+#continue-screen106 .library-header106 .shelf-actions138 button:hover{filter:brightness(1.13)}
+#continue-screen106 .library-header106 .shelf-actions138 button:active{transform:translateY(2px)!important;box-shadow:inset 0 1px #ffffff14,0 1px 0 #101b26!important}
+@media(max-width:600px){#continue-screen106>.library-card106>.library-header106{top:-12px}#continue-screen106 .library-header106 .shelf-actions138{display:flex;width:100%;gap:8px}#continue-screen106 .library-header106 .shelf-actions138 button{flex:1;min-width:0}}
+</style>
 </head>
 <!-- [V459] Cinematic typography and stage-tint spell declarations, independent of iPadOS reduced-motion. -->
 <!-- [V456] Two story lines refined; spell provenance labels hidden; calligraphy-ink declaration sequence. -->
@@ -11298,7 +11306,7 @@ function drawIchthyFoam140(c,g){if(!C140.ready)return;for(const a of g.rush?.ich
 
 loadCombat134().then(readyUp).catch(e=>{console.warn('[V417] Optional combat art preload failed:',e);});
 byId('shelf-top138').addEventListener('click',()=>{librarySound106(true);byId('books-screen106').scrollTo({top:0,behavior:reducedStoryMotion?'auto':'smooth'});byId('shelf-heading106').focus({preventScroll:true});});
-byId('continue-top511').addEventListener('click',()=>{librarySound106(true);byId('continue-screen106').scrollTo({top:0,behavior:reducedStoryMotion?'auto':'smooth'});byId('continue-heading106').focus({preventScroll:true});});
+byId('continue-top511').addEventListener('click',()=>{librarySound106(true);const page=byId('continue-screen106');page.scrollTop=0;const inner=byId('checkpoints106');if(inner&&inner.scrollTop)inner.scrollTop=0;byId('continue-heading106').focus({preventScroll:true});});
 function syncTitleShelf485(){
  // The only authority is the real Matsubara City 2 chapter clear, not books collected
  // or the map's unlocked state. Existing schema=1 saves remain compatible.

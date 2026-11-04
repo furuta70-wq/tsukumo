@@ -43,8 +43,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#080e1c">
-<meta name="description" content="九十九堂縁起絵巻。現代大阪を舞台に、百と菅原孝標女が古典作品と出会う古典文学史学習アプリ。">
-<title>九十九堂縁起絵巻</title>
+<meta name="description" content="九十九堂縁起絵巻　体験版。現代大阪を舞台に、百と菅原孝標女が古典作品と出会う古典文学史学習アプリ。">
+<title>九十九堂縁起絵巻　体験版</title>
 <!-- [C01] 基礎レイアウト・共通UI・初期画面群：CSS原文・原順序維持 -->
 <style>
 :root{color-scheme:dark;--ink:#080e1a;--paper:#eee6d4;--line:#c9d6df24;--bar-h:64px;--app-h:100dvh;--dock-h:clamp(164px,20dvh,208px)}
@@ -1999,11 +1999,25 @@ gap:5%;padding:5.5% 7%;align-items:center;
 #title-screen #books-open106[hidden],
 #title-screen #progress-reset223[hidden]{display:none!important}
 </style>
+
+<!-- [V490] Trial edition label, with responsive opening and title typography. -->
+<style id="trial-title490">
+#opening417 h1 .trial-label490,#title-screen .title-copy h1 .trial-label490{
+ font-size:.57em;letter-spacing:.03em;white-space:nowrap;font-weight:500;
+}
+#opening417 h1{
+ font-size:clamp(19px,4.1vw,33px);letter-spacing:.055em;white-space:nowrap;
+}
+#title-screen .title-copy h1{
+ font-size:clamp(19px,3.8vw,54px);letter-spacing:.05em;white-space:nowrap;
+}
+</style>
 </head>
 <!-- [V459] Cinematic typography and stage-tint spell declarations, independent of iPadOS reduced-motion. -->
 <!-- [V456] Two story lines refined; spell provenance labels hidden; calligraphy-ink declaration sequence. -->
 <!-- [V449] 63 literary spell names updated from primary text proposals; 6 motif-linked declaration effects. -->
 <!-- [V453] Fixed premium navigation, touch feedback and cut-in title normalization. -->
+<!-- [V492] Replay points unlock on genuine first-clear, grouped by registry with persisted clear order. -->
 <!-- [V457] Correct Sakai first-chapter clear recording and repair saved completed chapter from books. -->
 
 
@@ -2022,10 +2036,10 @@ gap:5%;padding:5.5% 7%;align-items:center;
 <!-- [V444] Clear result typography and button destination audit. -->
 <!-- [T00] HTML画面要素：DOM構造・ID・イベント参照先は変更しない -->
 <body>
-<div id="opening417" role="region" aria-label="九十九堂縁起絵巻　起動準備画面">
+<div id="opening417" role="region" aria-label="九十九堂縁起絵巻　体験版　起動準備画面">
  <img id="opening-skyline479" class="opening-skyline479" alt="" aria-hidden="true" draggable="false" decoding="async" fetchpriority="high" src="https://lh3.googleusercontent.com/d/1zQaPoltPBZUfV4QAjpNAOA_NLvhawk88" onerror="if(!this.dataset.driveFallback){this.dataset.driveFallback='1';this.src='https://drive.google.com/thumbnail?id=1zQaPoltPBZUfV4QAjpNAOA_NLvhawk88&amp;sz=w2400';}else{this.style.display='none';}">
  <section class="opening-card417">
-  <p class="opening-overline417">古典文学史学習アプリ</p><h1>九十九堂縁起絵巻</h1><div class="opening-rule417"></div>
+  <p class="opening-overline417">古典文学史学習アプリ</p><h1>九十九堂縁起絵巻<span class="trial-label490">　体験版</span></h1><div class="opening-rule417"></div>
   <p class="opening-lead417" id="opening-lead417">開巻の支度をしています</p>
   <div class="opening-progress-area417" role="status" aria-live="polite" aria-atomic="true">
    <div class="opening-progress-line417"><span class="opening-label417">素材を読み込み中</span><span id="opening-count417">0 / 5</span></div>
@@ -2058,7 +2072,7 @@ gap:5%;padding:5.5% 7%;align-items:center;
 </div>
 <section class="destination-arrival119" id="destination-arrival119" aria-labelledby="destination-heading119" hidden><img id="destination-background119" alt=""><canvas id="habikino-background275" width="1280" height="720" aria-hidden="true" hidden></canvas><canvas id="chomei-presence200" width="1280" height="720" aria-hidden="true" hidden></canvas><header><div><h2 id="destination-heading119"></h2><p id="destination-place119"></p></div><nav id="habikino-cutins276" aria-label="登場を見返す" hidden><button id="habikino-kojiki276" type="button">古事記の登場</button><button id="habikino-shoki276" type="button">日本書紀の登場</button><button id="habikino-kojiki-book277" type="button">古事記の書影</button><button id="habikino-shoki-book277" type="button">日本書紀の書影</button><button id="habikino-motion278" type="button">二組の動きを見る</button></nav><nav aria-label="行き先の操作"><button type="button" id="habikino-replay275" hidden>世界の書き換えを見る</button><button type="button" id="destination-book129" hidden>日本霊異記の書影</button><button type="button" id="destination-cutin127">登場を見返す</button><button type="button" id="destination-chomei200" hidden>鴨長明の動き</button><button type="button" id="destination-ukyo179" hidden>右京大夫・雪の第一弾幕</button><button type="button" id="destination-reread119">会話を読み返す</button><button type="button" id="destination-back119">地図へ戻る</button></nav></header><button id="sakai-motion312" class="secondary" type="button" hidden>六人の演出を見る</button><nav id="sakai-cutins308" aria-label="堺市２の登場を見返す" hidden></nav><p id="sakai-status308" role="status" aria-live="polite" hidden></p><footer>この先の戦闘は準備中です。</footer></section>
 <div class="overlay title-overlay" id="title-screen">
-<div class="title-copy"><p class="eyebrow">古典文学史学習アプリ</p><h1>九十九堂縁起絵巻</h1><div class="title-rule"></div><div class="start-actions"><button class="primary" id="start" type="button" disabled>読み込み中…</button><button class="secondary" id="continue106" type="button" disabled>もういちど</button><button class="secondary" id="title-map139" type="button" disabled hidden>大阪の地図</button><button class="secondary" id="books-open106" type="button" disabled hidden aria-hidden="true" tabindex="-1">取り戻した本 <span id="book-count106">0 / 7</span></button></div><div class="title-utilities106"><button class="secondary" id="controls-open" type="button" hidden tabindex="-1">設定</button><button class="secondary" id="practice-open" type="button" hidden tabindex="-1">開発用</button><button class="secondary" id="progress-reset223" type="button" hidden aria-hidden="true" tabindex="-1">進行状況の初期化</button></div><details id="debug-stage-box332" hidden inert aria-hidden="true"><summary>開発用｜全ステージ・全弾幕から開始</summary><p class="debug-help332">地域を開いて開始地点を選択。新しい地域・弾幕は登録簿と開発用の選択肢から自動追加します。</p><div id="debug-stage-groups332" aria-label="全ステージ・全弾幕"></div></details></div>
+<div class="title-copy"><p class="eyebrow">古典文学史学習アプリ</p><h1>九十九堂縁起絵巻<span class="trial-label490">　体験版</span></h1><div class="title-rule"></div><div class="start-actions"><button class="primary" id="start" type="button" disabled>読み込み中…</button><button class="secondary" id="continue106" type="button" disabled>もういちど</button><button class="secondary" id="title-map139" type="button" disabled hidden>大阪の地図</button><button class="secondary" id="books-open106" type="button" disabled hidden aria-hidden="true" tabindex="-1">取り戻した本 <span id="book-count106">0 / 7</span></button></div><div class="title-utilities106"><button class="secondary" id="controls-open" type="button" hidden tabindex="-1">設定</button><button class="secondary" id="practice-open" type="button" hidden tabindex="-1">開発用</button><button class="secondary" id="progress-reset223" type="button" hidden aria-hidden="true" tabindex="-1">進行状況の初期化</button></div><details id="debug-stage-box332" hidden inert aria-hidden="true"><summary>開発用｜全ステージ・全弾幕から開始</summary><p class="debug-help332">地域を開いて開始地点を選択。新しい地域・弾幕は登録簿と開発用の選択肢から自動追加します。</p><div id="debug-stage-groups332" aria-label="全ステージ・全弾幕"></div></details></div>
 <div class="title-bottom portrait-hint">横向きでのプレイがおすすめ</div>
 </div>
 <div class="overlay menu-overlay" id="practice-screen" hidden><div class="menu-copy"><h2>開発用</h2><label for="practice-phase">動作・演出の確認</label><div class="practice-actions"><select id="practice-phase" class="practice-select" aria-label="練習する弾幕"><optgroup label="羽曳野市"><option value="habikino279:0">因幡の白兎</option><option value="habikino279:1">八俣の大蛇</option><option value="habikino279:2">天地開闢</option><option value="habikino279:3">禊と三貴子</option><option value="habikino279:4">日神と月神</option><option value="habikino279:5">天の石屋戸</option><option value="habikino279:6">二つの神話</option></optgroup><option value="ise">伊勢・踏みつけ戦から</option><optgroup label="柏原市"><option value="sanetomo211">源実朝・海の開花（30秒）</option><option value="sanetomo210">源実朝・登場カットイン</option><option value="chomei199">鴨長明・登場から</option><option value="chomei201:0">鴨長明・うたかた</option><option value="chomei201:2">鴨長明・大火</option><option value="chomei201:4">鴨長明・辻風</option><option value="chomei201:5">鴨長明・大地震</option><option value="chomeiMotion200">鴨長明・全身モーション</option></optgroup><option value="transform">伊勢の撃破・変身を見る</option><option value="flight">伊勢を被った後から</option><optgroup label="東大阪市・平家物語"><option value="heike181:0">平家物語・奈良炎上</option><option value="heike181:1">平家物語・敦盛最期</option><option value="heike181:2">平家物語・扇の的</option><option value="heike181:3">平家物語・壇ノ浦</option></optgroup><option value="0">大和戦の最初から</option><option value="1">ほどける返歌から</option><option value="2">二つの輪と最後の歌から</option><option value="vortex">最後の歌の渦から</option><option value="stage2">松原市２・最初から</option><option value="mirror">四鏡連戦・大鏡から</option><option value="rush0">今鏡から</option><option value="rush1">水鏡から</option><option value="rush2">増鏡から</option><option value="result2">松原市２・リザルトを見る</option><option value="novel3">第三幕前・九十九堂</option><option value="worldMap108">大阪の地図を見る</option><option value="kenko149:0">兼好・全体</option><option value="kenko149:1">兼好・一矢</option><option value="kenko149:2">兼好・水車</option><option value="kenko149:3">兼好・鼎</option><option value="kenko149:4">兼好・花と月</option><option value="kyokai132:0">景戒・全体</option><option value="kyokai132:1">景戒・狐</option><option value="kyokai132:2">景戒・亀</option><option value="kyokai132:3">景戒・蛇</option><option value="kyokai132:4">景戒・経文</option><option value="kyokai132:5">景戒・大岩</option><option value="kyokai132:6">景戒・髑髏</option></select><button class="primary" id="boss-start" type="button" disabled>ここから始める</button></div><button class="secondary" id="motion-start" type="button" disabled>動きを見る</button><button class="secondary" id="practice-back" type="button">戻る</button></div></div>
@@ -2080,7 +2094,7 @@ gap:5%;padding:5.5% 7%;align-items:center;
 <div class="control-settings" id="control-settings" role="dialog" aria-modal="true" aria-labelledby="controls-heading" hidden><div class="settings-card"><h2 id="controls-heading">設定・操作</h2><div class="settings-utilities"><button class="secondary" id="sound" type="button" aria-pressed="false">音 OFF</button><button class="secondary" id="fullscreen" type="button">全画面</button></div><div class="menu-bgm-info437"><p id="battle-bgm-status440" role="status" aria-live="polite">戦闘BGM：準備中</p><button class="secondary" id="battle-bgm-retry440" type="button">戦闘BGMを再読み込み</button><p id="menu-bgm-status437" aria-live="polite">外部BGM：準備中</p><button class="secondary" id="menu-bgm-retry437" type="button">メニューBGMを再読み込み</button><label class="menu-bgm-label438" for="menu-bgm-direct438">音声ファイルの直接URL（任意）</label><input id="menu-bgm-direct438" type="url" inputmode="url" placeholder="https://example.com/menu.mp3" autocomplete="off" spellcheck="false"><button class="secondary" id="menu-bgm-apply438" type="button">URLを適用</button><p id="menu-bgm-direct-msg438" role="status">空欄で適用するとDropboxのmenu.mp3を再試行します。Dropboxの共有リンクを貼り付けても自動変換します。</p></div><label for="device-mode471">画面の操作方式</label><select id="device-mode471" aria-label="PCとタブレットの操作画面を選ぶ"><option value="auto">自動判別（推奨）</option><option value="keyboard">キーボード・マウス</option><option value="touch">タッチ操作</option></select><label for="control-mode">タッチの横移動</label><select id="control-mode"><option value="pad">横パッド：触れた位置で速度を変える</option><option value="buttons">左右ボタン：押して移動する</option></select><label for="touch-position421">操作パッドの位置</label><select id="touch-position421" aria-label="操作パッドの配置"><option value="standard">標準</option><option value="outer">外寄せ（左右の端に近づける）</option><option value="inner">内寄せ（中央に近づける）</option></select><label for="touch-scale421">操作パッドの大きさ</label><select id="touch-scale421" aria-label="操作パッドの大きさ"><option value="90">小・90%</option><option value="100">標準・100%</option><option value="110">大・110%</option></select><p class="control-note421">「跳ぶ／上昇」と「一口」は同じ大きさで変化します。変更内容は保存されます。</p><label for="flight-mode">伊勢を得た後の飛行</label><select id="flight-mode"><option value="responsive">すばやく立て直す：落下中に押すと強く減速</option><option value="classic">ゆったり飛ぶ：慣性を大きく残す</option></select><p>左は、触れた場所に応じてすぐ左右移動。中央付近はゆっくり、離すと停止。<br>右は、押して上昇。押したまま一口へ滑らせても上昇を保ちます。直接一口を押すと、上昇せずに発動します。<br>一口は緊急回避の大技。発動中は無敵。食べたものに応じた炎を吐き、8秒で再使用できます。</p><p class="settings-keys">キーボード：← → / N・M　　跳ぶ・上昇：Space / Z　　一口：X<br>Shiftで低速。Esc / Pで一時停止。</p><button class="primary" id="controls-close" type="button">戻る</button></div></div>
 <div class="overlay menu-overlay" id="pause-screen" hidden><div class="menu-copy">
 <div hidden><span id="pause-score">0</span><span id="pause-retry137"></span><button id="pause-settings" type="button" tabindex="-1">設定</button></div>
-<div class="pause-heading401"><span>九十九堂縁起絵巻</span><h2>一時停止</h2><p>操作を選択してください</p></div><div id="pause-actions222"><button class="primary" id="resume" type="button">つづける</button><button class="secondary" id="pause-restart" type="button">やり直す</button><button class="secondary" id="pause-title" type="button">タイトルへ</button><button class="secondary" id="pause-settings471" type="button">操作設定</button></div>
+<div class="pause-heading401"><span>九十九堂縁起絵巻　体験版</span><h2>一時停止</h2><p>操作を選択してください</p></div><div id="pause-actions222"><button class="primary" id="resume" type="button">つづける</button><button class="secondary" id="pause-restart" type="button">やり直す</button><button class="secondary" id="pause-title" type="button">タイトルへ</button><button class="secondary" id="pause-settings471" type="button">操作設定</button></div>
 <div id="pause-confirm222" role="alertdialog" aria-modal="true" aria-labelledby="pause-question222" aria-describedby="pause-detail222" hidden><h2 id="pause-question222"></h2><p id="pause-detail222"></p><button id="pause-cancel222" type="button">戻る</button><button id="pause-accept222" type="button"></button></div>
 </div></div>
 <div class="overlay menu-overlay" id="result-screen" hidden><section class="clear-sheet" id="result-sheet" tabindex="0" aria-label="第一幕の戦績" hidden>
@@ -2145,7 +2159,7 @@ const UnifiedLoading455=(()=>{
   if(root)return;
   root=document.createElement('section');root.id='unified-loading455';root.hidden=true;
   root.setAttribute('role','region');root.setAttribute('aria-label','物語の準備');
-  root.innerHTML='<div class="unified-card455"><div class="unified-mark455">九十九堂縁起絵巻</div><div class="unified-place455"></div><div class="unified-rule455"></div><h2 class="unified-title455"></h2><div class="unified-detail455" role="status" aria-live="polite" aria-atomic="true"></div><div class="unified-meter455"><div class="unified-track455"><div class="unified-fill455"></div></div><div class="unified-numbers455"></div></div><div class="unified-actions455"><button type="button" class="unified-retry455">再試行</button><button type="button" class="unified-back455">地図へ戻る</button></div></div>';
+  root.innerHTML='<div class="unified-card455"><div class="unified-mark455">九十九堂縁起絵巻　体験版</div><div class="unified-place455"></div><div class="unified-rule455"></div><h2 class="unified-title455"></h2><div class="unified-detail455" role="status" aria-live="polite" aria-atomic="true"></div><div class="unified-meter455"><div class="unified-track455"><div class="unified-fill455"></div></div><div class="unified-numbers455"></div></div><div class="unified-actions455"><button type="button" class="unified-retry455">再試行</button><button type="button" class="unified-back455">地図へ戻る</button></div></div>';
   document.body.append(root);
   placeEl=root.querySelector('.unified-place455');titleEl=root.querySelector('.unified-title455');detailEl=root.querySelector('.unified-detail455');
   meter=root.querySelector('.unified-meter455');fill=root.querySelector('.unified-fill455');numbers=root.querySelector('.unified-numbers455');
@@ -5970,6 +5984,54 @@ function resetInput(){keys.clear();pointer=null;focusTouch=false;jumpQueued=fals
 function checkpointAlias230(key){return key==='mobs'?'flight':key;}
 let progressFlushTimer227=null,novelResumeApplying227=false,novelModal227=null,novelFocus227=null;
 // [M230] セーブデータ移行・章進行。保存キー・スキーマは保持。
+// [V492] 各地点は「到達」と「突破」を分けて保持する。章IDや既存セーブ形式は維持。
+// REGION_REGISTRY251 が唯一の地点登録簿なので、今後の増築も自動で一覧化する。
+let activePointRun492=null;
+function ensurePointProgress492(p){
+ if(!Array.isArray(p.pointClears492)){
+  const cleared=[];const seen=new Set();const add=key=>{if(!seen.has(key)){seen.add(key);cleared.push(key);}};
+  // 旧バージョンで章クリアしたものは、当時の章内全地点をクリア済みとして引き継ぐ。
+  for(const id of p.completed||[]){const ch=REGION_REGISTRY251.find(c=>c.id===id);for(const [key] of ch?.checkpoints||[])add(key);}
+  // 旧版で途中まで進んだ場合、次の地点に到達済みなら直前を突破したと推定。
+  // 最後に到達した未クリア地点は絶対に追加しない。
+  const reached=new Set((collection106.reached||[]).map(checkpointAlias230));
+  for(const ch of REGION_REGISTRY251)for(let i=1;i<ch.checkpoints.length;i++){
+   const before=ch.checkpoints[i-1][0],after=ch.checkpoints[i][0];
+   if(reached.has(before)&&reached.has(after))add(before);
+  }
+  p.pointClears492=cleared;
+  queueProgress227();
+ }
+ if(!Array.isArray(p.pointChapterOrder492)){
+  const order=[];const add=id=>{if(id&&!order.includes(id))order.push(id);};
+  for(const id of p.completed||[])add(id);
+  for(const key of p.pointClears492){const ch=REGION_REGISTRY251.find(c=>c.checkpoints.some(row=>row[0]===key));add(ch?.id);}
+  p.pointChapterOrder492=order;
+  queueProgress227();
+ }
+}
+function noteChapterOrder492(id){const p=progressData227();ensurePointProgress492(p);if(!p.pointChapterOrder492.includes(id)){p.pointChapterOrder492.push(id);queueProgress227();}}
+function markClearedPoint492(key){
+ if(previewOnly106||game?.practice&&!game?.resume227)return false;
+ const ch=REGION_REGISTRY251.find(c=>c.checkpoints.some(row=>row[0]===key));if(!ch)return false;
+ const p=progressData227();ensurePointProgress492(p);
+ if(p.pointClears492.includes(key))return false;
+ p.pointClears492.push(key);
+ if(!p.pointChapterOrder492.includes(ch.id))p.pointChapterOrder492.push(ch.id);
+ queueProgress227();return true;
+}
+function noteCheckpointAdvance492(key){
+ // 同一ゲーム内で、隣の地点へ実際に進んだときだけ前の地点をクリア扱いにする。
+ // 再挑戦・セーブ再開・メニューからの直接起動はゲーム実体が変わるため加点しない。
+ if(!game||screen!=='play'||previewOnly106||game.practice&&!game.resume227)return;
+ const old=activePointRun492;
+ if(old?.game===game&&old.key!==key){
+  const ch=REGION_REGISTRY251.find(c=>c.checkpoints.some(row=>row[0]===old.key));
+  const i=ch?.checkpoints.findIndex(row=>row[0]===old.key)??-1;
+  if(i>=0&&ch.checkpoints[i+1]?.[0]===key)markClearedPoint492(old.key);
+ }
+ activePointRun492={game,key};
+}
 function progressData227(){
  if(collection106.progress227?.schema===1){const p=collection106.progress227;if(!Array.isArray(p.completed))p.completed=[];if(!p.read||typeof p.read!=='object'||Array.isArray(p.read))p.read={};if(!Array.isArray(p.skipped))p.skipped=[];
   // [V457] 旧版では堺市・第一話の2冊を獲得しても章クリア 'sakai' が記録されなかった。
@@ -5977,7 +6039,7 @@ function progressData227(){
   if(!p.completed.includes('sakai')&&(p.completed.includes('sakai1')||['eitaizo','munesanyo'].every(key=>collection106.books.includes(key)))){
    p.completed.push('sakai');queueProgress227();
   }
-  return p;}
+  ensurePointProgress492(p);return p;}
  const known=new Set(CHECKPOINTS106.map(p=>p[0])),p={schema:1,completed:[],resume:null,read:{},skipped:[]};
  // Legacy map access is not chapter-clear evidence. A scored full clear plus its book is.
  const best=key=>{try{return Number(localStorage.getItem(key))>0;}catch{return false;}};
@@ -5988,7 +6050,7 @@ function progressData227(){
  for(const [id,ch]of Object.entries(WORLD_CHAPTER_IDS230))if(worldState108.cleared.includes(id)&&!p.completed.includes(ch))p.completed.push(ch);
  const last=checkpointAlias230(collection106.last);
  if(known.has(last)&&collection106.reached.some(k=>checkpointAlias230(k)===last))p.resume={type:'checkpoint',key:last};
- collection106.progress227=p;return p;
+ collection106.progress227=p;ensurePointProgress492(p);return p;
 }
 function flushProgress227(){if(progressFlushTimer227!==null){clearTimeout(progressFlushTimer227);progressFlushTimer227=null;}saveCollection106();}
 function queueProgress227(){if(progressFlushTimer227===null)progressFlushTimer227=setTimeout(()=>{progressFlushTimer227=null;saveCollection106();},500);}
@@ -6005,7 +6067,11 @@ function chapterClearResume233(id){
  return kind?{type:'route',kind}:{type:'map'};
 }
 function completeChapter227(id){
- if(!progressRun227())return;const p=progressData227();if(!p.completed.includes(id))p.completed.push(id);
+ if(!progressRun227())return;
+ const ch=REGION_REGISTRY251.find(c=>c.id===id),last=ch?.checkpoints.at(-1)?.[0];
+ if(last)markClearedPoint492(last);
+ else noteChapterOrder492(id);
+ const p=progressData227();if(!p.completed.includes(id))p.completed.push(id);
  p.resume=chapterClearResume233(id);
  flushProgress227();
 }
@@ -6014,18 +6080,22 @@ function checkpointDefinition232(key){return CHECKPOINTS106.find(q=>q[0]===key);
 function canLaunchCheckpoint227(key){
  const p=progressData227(),point=checkpointDefinition232(key);if(!point)return false;
  const ch=CONTINUE_CHAPTERS225.find(c=>c.group===point[1]);
- if(key==='opening'||key==='stage1'||p.completed.includes(ch?.id))return true;
+ if(key==='opening'||key==='stage1'||p.pointClears492.includes(key))return true;
  if(p.resume?.type==='checkpoint'&&p.resume.key===key)return true;
  return key==='stage2'&&p.completed.includes('matsu1');
 }
 function continueState227(){
- const p=progressData227();
- // [V473] completed は初回クリア時に末尾追加される。章登録簿の固定順で表示しない。
- // 旧版からの復元分は元々クリア日時を持たないため、保存済み配列順を最善の順序とする。
- const clearIndex473=new Map(p.completed.map((id,i)=>[id,i]));
- const chapters=CONTINUE_CHAPTERS225.filter(c=>clearIndex473.has(c.id))
-  .map(c=>{const points=CHECKPOINTS106.filter(q=>q[1]===c.group);return {...c,points,last:points.length-1};})
-  .sort((a,b)=>clearIndex473.get(a.id)-clearIndex473.get(b.id));
+ const p=progressData227();ensurePointProgress492(p);
+ // 章の中には「突破した地点」だけを表示。章を全クリアしていなくても追加される。
+ // 最初の突破で章を一覧に追加し、再クリアしても順番は動かさない。
+ const cleared=new Set(p.pointClears492),order=new Map(p.pointChapterOrder492.map((id,i)=>[id,i]));
+ const pointOrder=new Map(p.pointClears492.map((key,i)=>[key,i]));
+ const chapters=CONTINUE_CHAPTERS225.map(c=>{
+  const points=CHECKPOINTS106.filter(q=>q[1]===c.group&&cleared.has(q[0]))
+   .sort((a,b)=>(pointOrder.get(a[0])??1e9)-(pointOrder.get(b[0])??1e9));
+  return {...c,points,last:points.length-1};
+ }).filter(c=>c.points.length||(c.novelOnly474&&p.completed.includes(c.id)))
+  .sort((a,b)=>(order.get(a.id)??1e9)-(order.get(b.id)??1e9));
  const available=new Set(chapters.flatMap(c=>c.points.map(q=>q[0])));let resume=null;
  if(p.resume?.type==='checkpoint')resume=checkpointDefinition232(p.resume.key)||null;
  else if(p.resume?.type==='novel')resume=['novel227',novelLocation227(p.resume.kind,p.resume.destination),novelTitle227(p.resume.kind,p.resume.destination)+'・会話の続き'];
@@ -6111,6 +6181,7 @@ function finishNovel227(skipped=false){
   },230);
   return;
  }
+ if(storyKind==='opening')markClearedPoint492('opening');
  captureNovel227();const kind=storyKind,destination=destination119,p=progressData227();
  if(skipped&&!p.skipped.includes(novelId227()))p.skipped.push(novelId227());
  p.resume={type:'route',kind,destination,exiting:true,carry:Math.max(0,game?.score||0)};flushProgress227();
@@ -6254,6 +6325,7 @@ function syncPrimaryScreenPanels246(next){
 // 新しい画面を追加するときの中心。画面専用の演出・状態管理は各関数へ置く。
 function setScreen(next){
  const from412=screen;
+ if(['title','world108','continue106','practice','books106','book106','destination119'].includes(next))activePointRun492=null;
  if(sakaiWholeRunRetain488&&!['play','paused','result','controls'].includes(next))releaseSakaiRun488();if(next==='result')unifiedResult412=null;else if(from412==='result')unifiedResult412=null;
  arena.classList.toggle('retry-enter412',next==='play'&&from412==='result');
  navigationScreenChanged226(next);
@@ -7277,6 +7349,7 @@ function showMirrorResult(){
  const genuineMatsuClear395=!game.practice;
  if(genuineMatsuClear395)previewOnly106=false;
  if(genuineMatsuClear395){
+  markClearedPoint492('rush2');
   const p=progressData227();if(!p.completed.includes('matsu2'))p.completed.push('matsu2');
   p.resume=chapterClearResume233('matsu2');flushProgress227();
   worldState108.unlocked=true;
@@ -7898,7 +7971,7 @@ try{const v=JSON.parse(localStorage.getItem(SAVE_KEY106)||'null');if(v&&typeof v
 function saveCollection106(){try{localStorage.setItem(SAVE_KEY106,JSON.stringify(collection106));}catch{}}
 function rememberBooks106(keys){if(previewOnly106)return;let changed=false;for(const k of keys)if(BOOK_DATA106.some(b=>b.key===k)&&!collection106.books.includes(k)){collection106.books.push(k);changed=true;}if(changed){saveCollection106();byId('book-count106').textContent=collection106.books.length+' / '+BOOK_DATA106.length;}}
 function registerPhaseCheckpoint242(g,key,save=true){markRetry137(g,key);if(save)recordCheckpoint106(key);}
-function recordCheckpoint106(key){if(previewOnly106)return;recordProgressCheckpoint227(key);if(collection106.last===key&&collection106.reached.includes(key))return;collection106.last=key;if(!collection106.reached.includes(key))collection106.reached.push(key);saveCollection106();}
+function recordCheckpoint106(key){if(previewOnly106)return;noteCheckpointAdvance492(checkpointAlias230(key));recordProgressCheckpoint227(key);if(collection106.last===key&&collection106.reached.includes(key))return;collection106.last=key;if(!collection106.reached.includes(key))collection106.reached.push(key);saveCollection106();}
 // [M232] 現在の戦闘から再開位置を特定。判定の優先順位を保持。
 // 第二章で更級日記を回収する従来の副作用も同じタイミングで実行する。
 function checkpointForGame232(g){
@@ -8116,7 +8189,7 @@ function startStageEntry234(key,retry=false,practice=false){
 }
 // 「もういちど」の入口は保存データ互換のため既存の関数名を維持。
 function startCheckpointStage232(key){return startStageEntry234(key,false);}
-function launchCheckpoint106(key){if(screen==='world108'&&osaka2Only375())return false;if(!ready||!canLaunchCheckpoint227(key))return false;previewOnly106=false;game=null;recordCheckpoint106(key);librarySound106();Promise.resolve(startCheckpointStage232(key)).then(ok=>{if(ok!==false&&game){game.practice=false;game.resume227=true;previewOnly106=false;recordProgressCheckpoint227(key);}});return true;}
+function launchCheckpoint106(key){if(screen==='world108'&&osaka2Only375())return false;if(!ready||!canLaunchCheckpoint227(key))return false;activePointRun492=null;previewOnly106=false;game=null;recordCheckpoint106(key);librarySound106();Promise.resolve(startCheckpointStage232(key)).then(ok=>{if(ok!==false&&game){game.practice=false;game.resume227=true;previewOnly106=false;recordProgressCheckpoint227(key);}});return true;}
 // [M251] 章・地域の表示情報は後段の REGION_REGISTRY251 で一元管理。
 
 // [V477] 指定の3再プレイ地点名だけを更新（チェックポイントID・開始先は維持）。
@@ -8146,7 +8219,7 @@ function renderContinueEntry473(state,ch,index){
  const head=element217('header','continue-chapter225'),art=element217('img','continue-art225');
  art.src=continueArt225(ch);art.alt='';art.draggable=false;art.loading=index===0?'eager':'lazy';art.decoding='async';
  const copy=element217('div','continue-chapter-copy225');
- copy.append(element217('p','continue-kicker225','CLEAR '+String(index+1).padStart(2,'0')));
+ copy.append(element217('p','continue-kicker225','REPLAY '+String(index+1).padStart(2,'0')));
  const title=element217('h3','',chapterLabel);title.id=headingId;
  copy.append(title,element217('p','continue-works225',ch.theme));
  if(ch.place)copy.append(element217('p','continue-place225',ch.place));
@@ -8183,17 +8256,12 @@ function openContinue106(){
  go.addEventListener('click',resumeProgress227);resume.append(copy,go);parent.append(resume);
  if(state.chapters.length){
   const chapterHead=element217('div','continue-list-heading473');
-  chapterHead.append(element217('h3','','クリアした物語'),element217('p','','最初にクリアした物語から、旅の順に並んでいます。'));
+  chapterHead.append(element217('h3','','クリアした地点'),element217('p','','各地点を突破すると、ここに追加されます。'));
   parent.append(chapterHead);
   const timeline=element217('div','continue-timeline473');
   timeline.setAttribute('aria-label','クリア済みの物語・クリア順');
   for(const [i,ch]of state.chapters.entries())timeline.append(renderContinueEntry473(state,ch,i));
   parent.append(timeline);
- }else{
-  const intro=element217('section','continue-intro227'),art=element217('img','');
-  const r=progressData227().resume,ch=CONTINUE_CHAPTERS225.find(c=>c.group===state.resume[1]);
-  art.src=ch?continueArt225(ch):r?.destination?DESTINATIONS119[r.destination]?.background:PROLOGUE[0].src;
-  art.alt='';intro.append(art,element217('h3','','旅の途中'),element217('p','','今は、保存した場所から再開できます。各章をクリアすると、その章の場面を選んで遊べるようになります。'));parent.append(intro);
  }
  setScreen('continue106');byId('continue-screen106').scrollTop=0;go.focus({preventScroll:true});
 }
@@ -8268,6 +8336,7 @@ function startOsaka1Novel374(){
 }
 function finishOsaka1Novel374(){
  if(!previewOnly106){
+  noteChapterOrder492('osaka1');
   const p=progressData227();if(!p.completed.includes('osaka1'))p.completed.push('osaka1');
   // 伊勢物語は奪われる。別の本や章クリアは変更しない。
   const index=collection106.books.indexOf('ise');if(index>=0){collection106.books.splice(index,1);saveCollection106();byId('book-count106').textContent=collection106.books.length+' / '+BOOK_DATA106.length;}
@@ -9228,21 +9297,26 @@ function layoutMarkerLabels221(scale){for(const[id,node]of worldMarkerNodes110){
 // [整理254] 地図詳細表示・位置補正・開放演出の現行実装（旧配置から移動。元コードは撤去）
 // [V458] Map-owned notice: combat toasts are hidden outside the arena.
 let worldLockedNoticeTimer458=null;
-function notifyWorldLocked458(){
+function notifyWorldLocked458(message='今は選べない',durationMs=500){
  const node=byId('world-locked-notice458');
  if(worldLockedNoticeTimer458!==null)clearTimeout(worldLockedNoticeTimer458);
+ node.textContent=message;
  node.hidden=false;node.classList.remove('visible458');
  void node.offsetWidth;
  node.classList.add('visible458');
- // [V469] 表示開始から0.50秒で完全消去（0.35秒表示＋0.15秒フェード）。
+ // [V493] 既存通知は0.5秒、大阪市２の体験版終了通知は1.0秒（末尾0.15秒フェード）。
  worldLockedNoticeTimer458=setTimeout(()=>{
   node.classList.remove('visible458');
   worldLockedNoticeTimer458=setTimeout(()=>{node.hidden=true;worldLockedNoticeTimer458=null;},150);
- },350);
+ },Math.max(150,durationMs-150));
 }
 function selectWorldCity108(id,focus=false){
  const city=worldCityById108.get(id);if(!city)return false;
- if(osaka2Only375()&&id!=='27100'){notifyWorldLocked458();return false;}
+ if(osaka2Only375()){
+  if(id==='27100')notifyWorldLocked458('体験版はここまでです',1000);
+  else notifyWorldLocked458();
+  return false;
+ }
  if(!canSelectCity137(id))return false;const changed414=worldSelected108!==id||byId('world-sheet110').hidden;cancelWorldSheetClose414();worldSelected108=id;
  const state=worldStatus108(id),home=id===WORLD_HOME108,work=WORKS136[id],faction=WORLD_FACTIONS108[city.faction];
  byId('world-sheet110').hidden=false;byId('world-map-screen108').classList.add('has-slip110');byId('world-city108').textContent=city.name;byId('world-sheet110').classList.toggle('habikino-sheet275',id==='27222');
@@ -9250,12 +9324,12 @@ function selectWorldCity108(id,focus=false){
  const desc=byId('world-description108');desc.replaceChildren();desc.classList.add('world-work136');byId('world-notice108').textContent='';
  if(home){const label=document.createElement('small');label.textContent='取り戻した作品';desc.append(label);const localKeys=new Set(['ise','yamato','ookagami','ima','mizu','masu','sara']),owned=collection106.books.filter(key=>localKeys.has(key)).map(key=>BOOK_DATA106.find(b=>b.key===key)).filter(Boolean);if(owned.length){const list=document.createElement('span');list.className='world-home-books161';for(const book of owned){const name=document.createElement('span');name.textContent='『'+book.title.replace(/[『』]/g,'')+'』';list.append(name);}desc.append(list);}else{const empty=document.createElement('small');empty.textContent='まだありません';desc.append(empty);}}
  else{ const label=document.createElement('small');label.textContent=state==='clear'||id==='27140'&&sakaiDone163()?'取り戻した作品':'対峙する作品';desc.append(label);for(const title of work?.titles||['未設定']){const name=document.createElement('span');name.textContent='『'+title.replace(/[『』]/g,'')+'』';desc.append(name);}if(work){const author=document.createElement('small');author.textContent=work.author;desc.append(author);}}
- const actions=byId('world-stage-actions108');actions.replaceChildren();const action=(label,fn,disabled=false)=>{const b=document.createElement('button');b.type='button';b.textContent=label;b.disabled=disabled;if(fn)b.addEventListener('click',()=>worldDepart414(fn));actions.append(b);};
+ const actions=byId('world-stage-actions108');actions.replaceChildren();const action=(label,fn,disabled=false,stayOnMap=false)=>{const b=document.createElement('button');b.type='button';b.textContent=label;b.disabled=disabled;if(fn)b.addEventListener('click',()=>stayOnMap?fn():worldDepart414(fn));actions.append(b);};
  if(home){action('松原市１へ',()=>launchCheckpoint106('stage1'),osaka2Only375());action('松原市２へ',()=>launchCheckpoint106('stage2'),osaka2Only375()||!canLaunchCheckpoint227('stage2'));}
  else if(id==='27100'){
   if(osaka2Only375()){
-   action('大阪市２・準備中',null,true);
-   byId('world-notice108').textContent='大阪市２が次の行き先です。ステージ本編は未実装です。';
+   action('大阪市２へ',()=>notifyWorldLocked458('体験版はここまでです',1000),false,true);
+   byId('world-notice108').textContent='';
   }else if(chapterClear373('osaka2',null)){
    action('大阪市１をもう一度見る',()=>replayOsaka1Novel474());
   }else action(state==='clear'?'もう一度見る':'訪ねる',()=>startOsaka1Novel374());
@@ -9618,7 +9692,7 @@ function prepareRegionalClearResult233(panelId=null,g=null){
 function regionalLifeText233(hp){
  return Array.from({length:3},(_,i)=>i<hp?'●':'○').join(' ');
 }
-function showHeikeResult181(){const g=game;if(!g?.heike181||g.heikeResult181)return;g.heikeResult181=true;collectClearBooks236('heike');recordCheckpoint106('heike0');prepareRegionalClearResult233('heike-result181',g);byId('heike-score181').textContent=String(g.score).padStart(7,'0');byId('heike-life181').textContent=regionalLifeText233(g.player.hp);const cv=byId('heike-book181'),book=H181.images.book,bookCtx=cv.getContext('2d');bookCtx.clearRect(0,0,cv.width,cv.height);if(book)bookCtx.drawImage(book,0,0,cv.width,cv.height);setScreen('result');byId('heike-next181').focus({preventScroll:true});}
+function showHeikeResult181(){const g=game;if(!g?.heike181||g.heikeResult181)return;markClearedPoint492('heike3');g.heikeResult181=true;collectClearBooks236('heike');recordCheckpoint106('heike0');prepareRegionalClearResult233('heike-result181',g);byId('heike-score181').textContent=String(g.score).padStart(7,'0');byId('heike-life181').textContent=regionalLifeText233(g.player.hp);const cv=byId('heike-book181'),book=H181.images.book,bookCtx=cv.getContext('2d');bookCtx.clearRect(0,0,cv.width,cv.height);if(book)bookCtx.drawImage(book,0,0,cv.width,cv.height);setScreen('result');byId('heike-next181').focus({preventScroll:true});}
 function continueHeikeToUkyo244(){ukyoCarry189={hp:game?.player?.hp||3,level:game?.player?.level||2};byId('heike-result181').hidden=true;playHigashiosakaCutin179('ukyo');}
 byId('heike-next181').addEventListener('click',continueHeikeToUkyo244);
 window.__heike181={start:startHeike181,get:()=>game,step:(dt,input={})=>{advance134(game,dt,input);handleEvents();},damage:n=>hDamage181(game,n),phase:n=>hPhase181(game,n),render:()=>renderScene(ctx,game,bg),bullet:hDrawBullet181,state:()=>({ready:H181.ready,screen,books:collection106.books,phase:game?.heike181?.phase,finished:game?.heike181?.finished})};
@@ -11472,6 +11546,7 @@ function drawKashiwaraFront201(c,g){
 
 }
 function showChomeiEnd201(){
+ markClearedPoint492('chomei5');
  clearResult=null;setScreen('result');byId('result-loss').hidden=true;byId('result-sheet').hidden=true;byId('chomei-end201').hidden=false;byId('chomei-end-map201').focus({preventScroll:true});
 }
 
@@ -11640,6 +11715,7 @@ function cChomeiQuote206(c,g){
 let sanetomoReturn210=null;
 function playSanetomoCutin210(fromChomei=false){
  if(!ready||!cutinImages?.sanetomo)return false;
+ if(fromChomei)markClearedPoint492('chomei5');
  loadSanetomo211().catch(console.error);sanetomoReturn210=fromChomei?'chomei':'practice';destination119='27221';prologueEl.hidden=true;resetInput();
  destinationCutin127={kind:'sanetomo',elapsed:0,duration:CUTIN_DURATION,chainIntro413:fromChomei};setScreen('destinationCutin127');canvas.setAttribute('aria-label','源実朝　金槐和歌集　登場カットイン');canvas.focus({preventScroll:true});sfx('cutinStart',{kind:'sanetomo',chain:fromChomei});return true;
 }

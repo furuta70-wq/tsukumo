@@ -1002,7 +1002,6 @@ body,button,select,h1,h2,h3,.eyebrow,.prologue-line{font-family:var(--ui-type217
 #continue-screen106 .continue-chapter-copy225 h3{font-size:27px;font-weight:400;letter-spacing:.06em;line-height:1.3;margin:0 0 9px;color:#3f3024}
 #continue-screen106 .continue-chapter-copy225 .continue-kicker225{font-size:10px;margin-bottom:7px}
 #continue-screen106 .continue-works225{font-size:12px;line-height:1.65;margin:0;color:#70553d;max-width:95%;text-wrap:balance}
-#continue-screen106 .continue-place225{font-size:11px;line-height:1.6;margin:7px 0 0;color:#89745a}
 #continue-screen106 .continue-points225{list-style:none;margin:0;padding:0}
 #continue-screen106 .continue-point225{display:grid;grid-template-columns:28px minmax(0,1fr) auto 12px;align-items:center;gap:14px;width:100%;min-height:58px;margin:0;padding:12px 12px;border:0;border-bottom:1px solid #a78f6c36;border-radius:0;background:none;text-align:left;box-shadow:none;color:#47372a;font-family:var(--ui-type217)}
 #continue-screen106 .continue-number225{font-family:var(--ui-type217);font-size:11px;font-variant-numeric:tabular-nums;color:#9b825f}
@@ -1018,7 +1017,6 @@ body,button,select,h1,h2,h3,.eyebrow,.prologue-line{font-family:var(--ui-type217
 @media(max-width:800px){
 #continue-screen106 .continue-point225{gap:9px;padding:11px 5px;grid-template-columns:23px minmax(0,1fr) auto 10px}
 #continue-screen106 .continue-point-name225{font-size:14px}
-#continue-screen106 .continue-place225{display:none}
 }
 @media(max-width:600px){
 #continue-screen106{padding:12px}
@@ -1911,7 +1909,6 @@ gap:5%;padding:5.5% 7%;align-items:center;
 #continue-screen106 .continue-entry473 .continue-chapter-copy225{min-height:168px;padding:23px 24px;}
 #continue-screen106 .continue-entry473 .continue-kicker225{color:#9c6247;font-size:11px;letter-spacing:.12em;}
 #continue-screen106 .continue-entry473 .continue-works225{line-height:1.8;}
-#continue-screen106 .continue-entry473 .continue-place225{display:block;font-size:11px;}
 #continue-screen106 .continue-entry473 .continue-points225{padding:3px 20px 9px;}
 #continue-screen106 .continue-entry473 .continue-point225{min-height:57px;}
 #continue-screen106 .continue-entry473 .continue-point225:last-child{border-bottom:0;}
@@ -1924,7 +1921,6 @@ gap:5%;padding:5.5% 7%;align-items:center;
  #continue-screen106 .continue-entry473 .continue-chapter225,#continue-screen106 .continue-entry473 .continue-chapter-copy225{min-height:135px;}
  #continue-screen106 .continue-entry473 .continue-chapter-copy225{padding:16px 13px;width:86%;}
  #continue-screen106 .continue-entry473 .continue-chapter-copy225 h3{font-size:clamp(21px,5vw,27px);}
- #continue-screen106 .continue-entry473 .continue-place225{display:none;}
  #continue-screen106 .continue-entry473 .continue-points225{padding:2px 9px 8px;}
  #continue-screen106 .continue-entry473 .continue-point225{padding:10px 4px;gap:7px;}
  #continue-screen106 .continue-list-heading473 p{font-size:11px;}
@@ -8397,6 +8393,29 @@ function continueChapterLabel474(ch){
  const num=String(ch.replayNumber||1).replace(/[0-9]/g,d=>String.fromCharCode(0xff10+Number(d)));
  return ch.name+num;
 }
+// [V498] 再プレイ画面だけ作品名を『』表記に統一。登録簿の文字列・保存キーは変更しない。
+// 各地域の theme は作品名を「・」で連ねた登録簿。今後追加された作品もここから自動適用する。
+function replayThemeText498(ch){
+ const original=String(ch.theme??'').replace(/[『』]/g,'');
+ const expanded=original.replace(/四鏡/g,'大鏡・今鏡・水鏡・増鏡');
+ return expanded.split('・').map(name=>name.trim()).filter(Boolean).map(name=>'『'+name+'』').join('・');
+}
+let replayWorkNamesCache498=null;
+function replayWorkText498(text){
+ const original=String(text??'').replace(/[『』]/g,'');
+ if(!replayWorkNamesCache498){
+  const titles=new Set(['百鬼夜行絵巻']);
+  for(const chapter of CONTINUE_CHAPTERS225){
+   if(chapter.novelOnly474)continue;
+   const expanded=String(chapter.theme??'').replace(/[『』]/g,'').replace(/四鏡/g,'大鏡・今鏡・水鏡・増鏡');
+   for(const name of expanded.split('・'))if(name.trim())titles.add(name.trim());
+  }
+  replayWorkNamesCache498=[...titles].sort((a,b)=>b.length-a.length);
+ }
+ // 元のチェックポイント名の「・うたかた」「・奈良炎上」などの副題は括弧の外に保持する。
+ const pattern=new RegExp(replayWorkNamesCache498.map(name=>name.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|'),'g');
+ return original.replace(pattern,name=>'『'+name+'』');
+}
 // [V473] 「もういちど」：市を押して切り替える方式を廃止し、クリア順の縦スクロールへ。
 function continueArt225(ch){return ch.novelOnly474?OSAKA1_SCENES374[0].src:ch.city?DESTINATIONS119[ch.city]?.background:ch.id==='matsu2'?STAGE2_IMAGE_DATA[0]:bg.src;}
 function renderContinueEntry473(state,ch,index){
@@ -8411,8 +8430,7 @@ function renderContinueEntry473(state,ch,index){
  const copy=element217('div','continue-chapter-copy225');
  copy.append(element217('p','continue-kicker225','REPLAY '+String(index+1).padStart(2,'0')));
  const title=element217('h3','',chapterLabel);title.id=headingId;
- copy.append(title,element217('p','continue-works225',ch.theme));
- if(ch.place)copy.append(element217('p','continue-place225',ch.place));
+ copy.append(title,element217('p','continue-works225',replayThemeText498(ch)));
  head.append(art,copy);inner.append(head);
  const list=element217('ol','continue-points225');list.setAttribute('aria-label',chapterLabel+'の開始地点');
  if(ch.novelOnly474){
@@ -8428,10 +8446,10 @@ function renderContinueEntry473(state,ch,index){
   const li=element217('li',''),button=element217('button','continue-point225');
   button.type='button';button.dataset.checkpoint=key;button.dataset.last=String(last);button.disabled=!allowed;
   button.append(element217('span','continue-number225',String(i+1).padStart(2,'0')));
-  const text=element217('span','continue-point-copy225');text.append(element217('span','continue-point-name225',label));button.append(text);
+  const text=element217('span','continue-point-copy225');text.append(element217('span','continue-point-name225',replayWorkText498(label)));button.append(text);
   const status=element217('span','continue-point-status225',last?'前回の地点':allowed?'':'未到達');button.append(status);
   const arrow=element217('span','continue-point-arrow225','›');arrow.setAttribute('aria-hidden','true');button.append(arrow);
-  button.setAttribute('aria-label',chapterLabel+'・'+label+(allowed?last?'・前回の地点':'から始める':'・未到達'));
+  button.setAttribute('aria-label',chapterLabel+'・'+replayWorkText498(label)+(allowed?last?'・前回の地点':'から始める':'・未到達'));
   button.addEventListener('click',()=>{if(state.available.has(key))launchCheckpoint106(key);});
   li.append(button);list.append(li);
  }
@@ -9204,31 +9222,31 @@ let destination119=null,destinationCutin127=null;
 // 地域を増築するときは、まずここに章情報・カットイン・開始先を登録する。
 // 背景画像と地図接続は、サイズ・配置と既存の開放条件を保つため別管理。
 const REGION_REGISTRY251=[
- {id:'matsu1',group:'松原市　１',name:'松原市',part:'第一話',theme:'伊勢物語・大和物語',place:'商店街に、物語が降りてくる。',city:null,
+ {id:'matsu1',group:'松原市　１',name:'松原市',part:'第一話',theme:'伊勢物語・大和物語',city:null,
   checkpoints:[['opening','物語のはじまり'],['stage1','百鬼夜行絵巻１','松原市１・道中'],['ise','伊勢物語','伊勢戦'],['flight','百鬼夜行絵巻２'],['yamato','大和物語','大和戦']],
   retryOnly:{mobs:'雑魚ラッシュ'},clearRoute:'ending',rewards:{matsu1:{books:['ise','yamato']}}},
- {id:'matsu2',group:'松原市　２',name:'松原市',replayNumber:2,part:'第二話',theme:'『更級日記』・四鏡',place:'九十九堂へ続く、鏡の夜。',city:null,
+ {id:'matsu2',group:'松原市　２',name:'松原市',replayNumber:2,part:'第二話',theme:'更級日記・四鏡',city:null,
   checkpoints:[['stage2','更級日記','松原市２・道中'],['mirror','大鏡','大鏡戦'],['rush0','今鏡','今鏡戦'],['rush1','水鏡','水鏡戦'],['rush2','増鏡','増鏡戦']],
   clearRoute:'chapter3',rewards:{matsu2:{books:MIRROR_BOOK_KEYS94}}},
- {id:'sakai',preloadGroup:'sakai1',group:'堺市　１',name:'堺市',part:'第一話',theme:'『日本永代蔵』・『世間胸算用』',place:'商いの町を、物語が駆ける。',city:'27140',checkpointOrder:3,cutin:'saikaku',routes:{background:startSaikaku163,arrival:startSaikaku163},
+ {id:'sakai',preloadGroup:'sakai1',group:'堺市　１',name:'堺市',part:'第一話',theme:'日本永代蔵・世間胸算用',city:'27140',checkpointOrder:3,cutin:'saikaku',routes:{background:startSaikaku163,arrival:startSaikaku163},
   checkpoints:[['saikaku0','日本永代蔵','西鶴戦・日本永代蔵'],['saikaku1','世間胸算用','西鶴戦・世間胸算用']],
   rewards:{sakai1:{books:['eitaizo','munesanyo']}}},
- {id:'sakai2',group:'堺市　２',name:'堺市',replayNumber:2,part:'第二話',theme:'『好色一代男』・『金々先生栄花夢』・『春色梅児誉美』・『仮名手本忠臣蔵』・『偐紫田舎源氏』・『江戸生艶気樺焼』',city:null,presentationOnly:false,cutins:SAKAI_CUTIN_ORDER308,checkpoints:[['sakai2p0', '好色一代男', '西鶴・好色丸'], ['sakai2p1', '金々先生栄花夢', '春町・栄花の夢'], ['sakai2p2', '春色梅児誉美', '春水・梅の縁'], ['sakai2p3', '仮名手本忠臣蔵', '出雲・討入り'], ['sakai2p4', '偐紫田舎源氏', '種彦・絵の中へ'], ['sakai2p5', '江戸生艶気樺焼', '京伝・評判']],rewards:{sakai2:{books:SAKAI_BOOKS309.filter(book=>SAKAI_CUTIN_ORDER308.includes(book.cutin)).map(book=>book.key)}}},
- {id:'fuji',preloadGroup:'fuji',group:'藤井寺市',name:'藤井寺市',part:'',theme:'『日本霊異記』',place:'葛井寺の門前で、怪異と向き合う。',city:'27226',checkpointOrder:2,cutin:'kyokai',routes:{arrival:startKyokai131,afterCutin:startKyokai131},
+ {id:'sakai2',group:'堺市　２',name:'堺市',replayNumber:2,part:'第二話',theme:'好色一代男・金々先生栄花夢・春色梅児誉美・仮名手本忠臣蔵・偐紫田舎源氏・江戸生艶気樺焼',city:null,presentationOnly:false,cutins:SAKAI_CUTIN_ORDER308,checkpoints:[['sakai2p0', '好色一代男', '西鶴・好色丸'], ['sakai2p1', '金々先生栄花夢', '春町・栄花の夢'], ['sakai2p2', '春色梅児誉美', '春水・梅の縁'], ['sakai2p3', '仮名手本忠臣蔵', '出雲・討入り'], ['sakai2p4', '偐紫田舎源氏', '種彦・絵の中へ'], ['sakai2p5', '江戸生艶気樺焼', '京伝・評判']],rewards:{sakai2:{books:SAKAI_BOOKS309.filter(book=>SAKAI_CUTIN_ORDER308.includes(book.cutin)).map(book=>book.key)}}},
+ {id:'fuji',preloadGroup:'fuji',group:'藤井寺市',name:'藤井寺市',part:'',theme:'日本霊異記',city:'27226',checkpointOrder:2,cutin:'kyokai',routes:{arrival:startKyokai131,afterCutin:startKyokai131},
   checkpoints:[['kyokai','日本霊異記','景戒戦']],rewards:{fuji:{books:['ryoiki'],city:true}}},
- {id:'yao',preloadGroup:'yao',group:'八尾市',name:'八尾市',part:'',theme:'『徒然草』',place:'暮らしの傍らに、兼好法師がいる。',city:'27212',cutin:'kenko',routes:{background:startKenko149,arrival:startKenko149},
+ {id:'yao',preloadGroup:'yao',group:'八尾市',name:'八尾市',part:'',theme:'徒然草',city:'27212',cutin:'kenko',routes:{background:startKenko149,arrival:startKenko149},
   checkpoints:[['kenko','徒然草','兼好法師戦']],rewards:{yao:{books:['tsurezure'],city:true}}},
- {id:'kashi',preloadGroup:'kashiwara',group:'柏原市',name:'柏原市',part:'',theme:'『方丈記』・『金槐和歌集』',place:'災いの方丈から、波と花の歌景へ。',city:'27221',cutin:'chomei',
+ {id:'kashi',preloadGroup:'kashiwara',group:'柏原市',name:'柏原市',part:'',theme:'方丈記・金槐和歌集',city:'27221',cutin:'chomei',
   checkpoints:[['chomei0','方丈記・うたかた','鴨長明・うたかた'],['chomei2','方丈記・大火','鴨長明・大火'],['chomei4','方丈記・辻風','鴨長明・辻風'],['chomei5','方丈記・大地震','鴨長明・大地震'],['sanetomo0','金槐和歌集','源実朝・金槐和歌集']],
   rewards:{kashi:{books:['hojoki211','kinkai211'],city:true}}},
- {id:'higashi',preloadGroup:'higashiosaka',group:'東大阪市',name:'東大阪市',part:'',theme:'『平家物語』・『建礼門院右京大夫集』',place:'軍勢の夜を越え、雪の逢瀬へ。',city:'27227',cutin:'heike',routes:{background:startHeike181},
+ {id:'higashi',preloadGroup:'higashiosaka',group:'東大阪市',name:'東大阪市',part:'',theme:'平家物語・建礼門院右京大夫集',city:'27227',cutin:'heike',routes:{background:startHeike181},
   checkpoints:[['heike0','平家物語・奈良炎上','平家物語・奈良炎上'],['heike1','平家物語・敦盛最期','平家物語・敦盛最期'],['heike2','平家物語・扇の的','平家物語・扇の的'],['heike3','平家物語・壇ノ浦','平家物語・壇ノ浦'],['ukyo0','建礼門院右京大夫集・雪の逢瀬','右京大夫・雪の第一弾幕']],
   rewards:{heike:{books:['heike']},higashi:{books:['ukyo217'],city:true}}},
  // [V474] 大阪市１はノベルのみ。ステージ/マップ市クリア/報酬は定義しない。
  // 現行のクリア処理が既に記録する completed:'osaka1' を一覧表示するだけ。
- {id:'osaka1',group:'大阪市　１',name:'大阪市',replayNumber:1,part:'',theme:'近松門左衛門',place:'道頓堀で、百が喫する敗北。',city:null,novelOnly474:true,checkpoints:[]},
+ {id:'osaka1',group:'大阪市　１',name:'大阪市',replayNumber:1,part:'',theme:'曽根崎心中',city:null,novelOnly474:true,checkpoints:[]},
  // 羽曳野市：二作品を一つの章として登録。既存の再開順は保持する。
- {id:'habikino',preloadGroup:'habikino',group:'羽曳野市',name:'羽曳野市',part:'',theme:'『古事記』・『日本書紀』',place:'古市の夜、二つの神話が開く。',city:'27222',routes:{background:startHabikino279},
+ {id:'habikino',preloadGroup:'habikino',group:'羽曳野市',name:'羽曳野市',part:'',theme:'古事記・日本書紀',city:'27222',routes:{background:startHabikino279},
   cutin:'kojiki276',cutins:['kojiki276','shoki276'],checkpoints:[["habikino0", "因幡の白兎", "羽曳野市・因幡の白兎"], ["habikino1", "八俣の大蛇", "羽曳野市・八俣の大蛇"], ["habikino2", "天地開闢", "羽曳野市・天地開闢"], ["habikino3", "禊と三貴子", "羽曳野市・禊と三貴子"], ["habikino4", "日神と月神", "羽曳野市・日神と月神"], ["habikino5", "天の石屋戸", "羽曳野市・天の石屋戸"], ["habikino6", "二つの神話", "羽曳野市・二つの神話"]],rewards:{habikino:{books:['kojiki277','shoki277'],city:true}}}
 ];
 // 旧データ形式・旧関数の参照先は保持し、全て同じ登録簿から生成する。

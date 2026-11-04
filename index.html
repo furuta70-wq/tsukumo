@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ja" data-build="ver477">
+<html lang="ja" data-build="ver495">
 <head>
 <!--
 九十九堂縁起絵巻 / 単一HTML保守索引（ver.270・構造監査版）
@@ -1659,7 +1659,7 @@ gap:5%;padding:5.5% 7%;align-items:center;
 }
 </style>
 
-<!-- [V455] All in-game preparation and failure states use one book-style display; legacy loaders still own the actual downloads. -->
+<!-- [V497] All stages report real asset groups, verified steps and waiting time. -->
 <style id="unified-loading455-style">
 /* Preserve the legacy gates for game safety; their visible surfaces are replaced by one presenter. */
 #scene-entry394,#stage-preflight379,#image-gate378,#stage2-entry-notice387,#sakai-loading429{display:none!important;pointer-events:none!important}
@@ -1689,6 +1689,15 @@ gap:5%;padding:5.5% 7%;align-items:center;
 @media(max-height:430px){#unified-loading455 .unified-card455{padding:15px 20px}#unified-loading455 .unified-place455{margin-top:5px;font-size:20px}#unified-loading455 .unified-rule455{margin:8px auto}#unified-loading455 .unified-meter455{margin-top:12px}#unified-loading455 .unified-actions455{margin-top:12px}}
 @media(max-width:380px){#unified-loading455 .unified-actions455{gap:8px}#unified-loading455 .unified-actions455 button{min-width:112px;padding:10px 14px;font-size:12px}}
 @media(prefers-reduced-motion:reduce){#unified-loading455 .unified-meter455.is-indeterminate455 .unified-fill455{animation:none;left:32%}#unified-loading455 .unified-fill455{transition:none}#unified-loading455 button{transition:none}}
+#unified-loading455 .unified-secondary496{margin-top:13px;text-align:left}
+#unified-loading455 .unified-secondary496[hidden]{display:none!important}
+#unified-loading455 .unified-secondary-line496{font:12px/1.7 "Yu Gothic",Meiryo,sans-serif;color:#b9baa8;font-variant-numeric:tabular-nums}
+#unified-loading455 .unified-secondary-track496{height:3px;position:relative;background:#3c4650;border-radius:4px;overflow:hidden;margin-top:4px}
+#unified-loading455 .unified-secondary-fill496{height:100%;width:0%;background:#8cb0af;transition:width .18s linear}
+#unified-loading455 .unified-activity497{margin:14px auto 0;color:#aeb8b8;font:12px/1.65 "Yu Gothic",Meiryo,sans-serif;letter-spacing:.02em}
+#unified-loading455 .unified-activity497:before{content:"";display:inline-block;width:6px;height:6px;margin-right:9px;vertical-align:2px;border-radius:50%;background:#a4c4b4;box-shadow:0 0 8px #a4c4b470;animation:unifiedActivity497 1.8s ease-in-out infinite}
+@keyframes unifiedActivity497{0%,100%{opacity:.45}50%{opacity:1}}
+@media(prefers-reduced-motion:reduce){#unified-loading455 .unified-activity497:before{animation:none}}
 </style>
 <style id="v458-map-locked-notice">
 #world-locked-notice458{position:absolute;left:50%;top:57%;z-index:95;pointer-events:none;
@@ -2012,6 +2021,7 @@ gap:5%;padding:5.5% 7%;align-items:center;
  font-size:clamp(19px,3.8vw,54px);letter-spacing:.05em;white-space:nowrap;
 }
 </style>
+<!-- Ver495: cross-region novel preloading, progress-aware image gates and Kashiwara retry -->
 </head>
 <!-- [V459] Cinematic typography and stage-tint spell declarations, independent of iPadOS reduced-motion. -->
 <!-- [V456] Two story lines refined; spell provenance labels hidden; calligraphy-ink declaration sequence. -->
@@ -2094,7 +2104,7 @@ gap:5%;padding:5.5% 7%;align-items:center;
 <div class="control-settings" id="control-settings" role="dialog" aria-modal="true" aria-labelledby="controls-heading" hidden><div class="settings-card"><h2 id="controls-heading">設定・操作</h2><div class="settings-utilities"><button class="secondary" id="sound" type="button" aria-pressed="false">音 OFF</button><button class="secondary" id="fullscreen" type="button">全画面</button></div><div class="menu-bgm-info437"><p id="battle-bgm-status440" role="status" aria-live="polite">戦闘BGM：準備中</p><button class="secondary" id="battle-bgm-retry440" type="button">戦闘BGMを再読み込み</button><p id="menu-bgm-status437" aria-live="polite">外部BGM：準備中</p><button class="secondary" id="menu-bgm-retry437" type="button">メニューBGMを再読み込み</button><label class="menu-bgm-label438" for="menu-bgm-direct438">音声ファイルの直接URL（任意）</label><input id="menu-bgm-direct438" type="url" inputmode="url" placeholder="https://example.com/menu.mp3" autocomplete="off" spellcheck="false"><button class="secondary" id="menu-bgm-apply438" type="button">URLを適用</button><p id="menu-bgm-direct-msg438" role="status">空欄で適用するとDropboxのmenu.mp3を再試行します。Dropboxの共有リンクを貼り付けても自動変換します。</p></div><label for="device-mode471">画面の操作方式</label><select id="device-mode471" aria-label="PCとタブレットの操作画面を選ぶ"><option value="auto">自動判別（推奨）</option><option value="keyboard">キーボード・マウス</option><option value="touch">タッチ操作</option></select><label for="control-mode">タッチの横移動</label><select id="control-mode"><option value="pad">横パッド：触れた位置で速度を変える</option><option value="buttons">左右ボタン：押して移動する</option></select><label for="touch-position421">操作パッドの位置</label><select id="touch-position421" aria-label="操作パッドの配置"><option value="standard">標準</option><option value="outer">外寄せ（左右の端に近づける）</option><option value="inner">内寄せ（中央に近づける）</option></select><label for="touch-scale421">操作パッドの大きさ</label><select id="touch-scale421" aria-label="操作パッドの大きさ"><option value="90">小・90%</option><option value="100">標準・100%</option><option value="110">大・110%</option></select><p class="control-note421">「跳ぶ／上昇」と「一口」は同じ大きさで変化します。変更内容は保存されます。</p><label for="flight-mode">伊勢を得た後の飛行</label><select id="flight-mode"><option value="responsive">すばやく立て直す：落下中に押すと強く減速</option><option value="classic">ゆったり飛ぶ：慣性を大きく残す</option></select><p>左は、触れた場所に応じてすぐ左右移動。中央付近はゆっくり、離すと停止。<br>右は、押して上昇。押したまま一口へ滑らせても上昇を保ちます。直接一口を押すと、上昇せずに発動します。<br>一口は緊急回避の大技。発動中は無敵。食べたものに応じた炎を吐き、8秒で再使用できます。</p><p class="settings-keys">キーボード：← → / N・M　　跳ぶ・上昇：Space / Z　　一口：X<br>Shiftで低速。Esc / Pで一時停止。</p><button class="primary" id="controls-close" type="button">戻る</button></div></div>
 <div class="overlay menu-overlay" id="pause-screen" hidden><div class="menu-copy">
 <div hidden><span id="pause-score">0</span><span id="pause-retry137"></span><button id="pause-settings" type="button" tabindex="-1">設定</button></div>
-<div class="pause-heading401"><span>九十九堂縁起絵巻　体験版</span><h2>一時停止</h2><p>操作を選択してください</p></div><div id="pause-actions222"><button class="primary" id="resume" type="button">つづける</button><button class="secondary" id="pause-restart" type="button">やり直す</button><button class="secondary" id="pause-title" type="button">タイトルへ</button><button class="secondary" id="pause-settings471" type="button">操作設定</button></div>
+<div class="pause-heading401"><span>九十九堂縁起絵巻　体験版</span><h2>一時停止</h2><p>操作を選択してください</p></div><div id="pause-actions222"><button class="primary" id="resume" type="button">つづける</button><button class="secondary" id="pause-restart" type="button">やり直す</button><button class="secondary" id="pause-title" type="button">タイトルへ</button></div>
 <div id="pause-confirm222" role="alertdialog" aria-modal="true" aria-labelledby="pause-question222" aria-describedby="pause-detail222" hidden><h2 id="pause-question222"></h2><p id="pause-detail222"></p><button id="pause-cancel222" type="button">戻る</button><button id="pause-accept222" type="button"></button></div>
 </div></div>
 <div class="overlay menu-overlay" id="result-screen" hidden><section class="clear-sheet" id="result-sheet" tabindex="0" aria-label="第一幕の戦績" hidden>
@@ -2152,18 +2162,18 @@ gap:5%;padding:5.5% 7%;align-items:center;
 // [V455] One user-facing stage-loading presenter. Older gates keep ownership of
 // actual image decoding, retries, audio and stage transitions; only their UIs are hidden.
 const UnifiedLoading455=(()=>{
- const sources=new Map();let root=null,placeEl,titleEl,detailEl,meter,fill,numbers,actions,retryBtn,backBtn;
+ const sources=new Map();let root=null,placeEl,titleEl,detailEl,meter,fill,numbers,secondary,activityEl,actions,retryBtn,backBtn;
  let lastSignature='',serial=0;
  const priority={scene:90,stage2:80,sakai:100,preflight:60,gate:50};
  function ensure(){
   if(root)return;
   root=document.createElement('section');root.id='unified-loading455';root.hidden=true;
   root.setAttribute('role','region');root.setAttribute('aria-label','物語の準備');
-  root.innerHTML='<div class="unified-card455"><div class="unified-mark455">九十九堂縁起絵巻　体験版</div><div class="unified-place455"></div><div class="unified-rule455"></div><h2 class="unified-title455"></h2><div class="unified-detail455" role="status" aria-live="polite" aria-atomic="true"></div><div class="unified-meter455"><div class="unified-track455"><div class="unified-fill455"></div></div><div class="unified-numbers455"></div></div><div class="unified-actions455"><button type="button" class="unified-retry455">再試行</button><button type="button" class="unified-back455">地図へ戻る</button></div></div>';
+  root.innerHTML='<div class="unified-card455"><div class="unified-mark455">九十九堂縁起絵巻　体験版</div><div class="unified-place455"></div><div class="unified-rule455"></div><h2 class="unified-title455"></h2><div class="unified-detail455" role="status" aria-live="polite" aria-atomic="true"></div><div class="unified-meter455"><div class="unified-track455"><div class="unified-fill455"></div></div><div class="unified-numbers455"></div><div class="unified-secondary496" hidden><div class="unified-secondary-line496"></div><div class="unified-secondary-track496"><div class="unified-secondary-fill496"></div></div></div><div class="unified-activity497" aria-live="off"></div></div><div class="unified-actions455"><button type="button" class="unified-retry455">再試行</button><button type="button" class="unified-back455">地図へ戻る</button></div></div>';
   document.body.append(root);
   placeEl=root.querySelector('.unified-place455');titleEl=root.querySelector('.unified-title455');detailEl=root.querySelector('.unified-detail455');
-  meter=root.querySelector('.unified-meter455');fill=root.querySelector('.unified-fill455');numbers=root.querySelector('.unified-numbers455');
-  actions=root.querySelector('.unified-actions455');retryBtn=root.querySelector('.unified-retry455');backBtn=root.querySelector('.unified-back455');
+  meter=root.querySelector('.unified-meter455');fill=root.querySelector('.unified-fill455');numbers=root.querySelector('.unified-numbers455');secondary=root.querySelector('.unified-secondary496');
+  activityEl=root.querySelector('.unified-activity497');actions=root.querySelector('.unified-actions455');retryBtn=root.querySelector('.unified-retry455');backBtn=root.querySelector('.unified-back455');
   retryBtn.addEventListener('click',()=>{const chosen=pick();if(chosen?.retry){retryBtn.disabled=true;chosen.retry();}});
   backBtn.addEventListener('click',()=>{const chosen=pick();if(chosen?.back){backBtn.disabled=true;chosen.back();}});
  }
@@ -2177,7 +2187,7 @@ const UnifiedLoading455=(()=>{
   if(!v){root.hidden=true;lastSignature='';return;}
   const progress=Number.isFinite(v.done)&&Number.isFinite(v.total)&&v.total>0;
   const done=progress?Math.min(v.total,Math.max(0,v.done)):0;
-  const signature=JSON.stringify([v.place,v.title,v.detail,v.error,done,v.total,v.metric,!!v.retry,!!v.back,v.backText]);
+  const signature=JSON.stringify([v.place,v.title,v.detail,v.error,done,v.total,v.metric,v.unit,v.secondary,!!v.retry,!!v.back,v.backText]);
   root.hidden=false;
   if(signature===lastSignature)return;lastSignature=signature;
   placeEl.textContent=v.place||'物語';
@@ -2186,17 +2196,40 @@ const UnifiedLoading455=(()=>{
   meter.classList.toggle('is-indeterminate455',!progress&&!v.error);
   meter.hidden=!!v.error;
   fill.style.width=progress?(done/v.total*100)+'%':'';
-  numbers.textContent=v.metric||(progress?'画像 '+done+' / '+v.total+' 枚':'');
+  numbers.textContent=v.metric||(progress?((v.unit||'画像')+' '+done+' / '+v.total+' '+(v.unit==='準備項目'?'項目':v.unit==='連戦素材'?'組':'枚')):'画像の準備状況を確認しています');
+  const sub=v.secondary,subValid=Number.isFinite(sub?.done)&&Number.isFinite(sub?.total)&&sub.total>0;
+  secondary.hidden=!subValid;
+  if(subValid){secondary.querySelector('.unified-secondary-line496').textContent=(sub.label||'共通画像')+' '+Math.max(0,sub.done)+' / '+sub.total+' 枚';secondary.querySelector('.unified-secondary-fill496').style.width=(Math.min(1,Math.max(0,sub.done/sub.total))*100)+'%';}
   retryBtn.hidden=!v.retry;retryBtn.disabled=false;
   backBtn.hidden=!v.back;backBtn.disabled=false;
   backBtn.textContent=v.backText||'地図へ戻る';
   actions.hidden=!v.retry&&!v.back;
+  tickActivity();
  }
- function show(source,opts){sources.set(source,{...opts,seq:++serial});draw();}
+ function show(source,opts){
+  // A progress update is meaningful only when completed work or the active task changes.
+  const prev=sources.get(source),now=performance.now();
+  const key=JSON.stringify([opts.done,opts.total,opts.secondary?.done,opts.secondary?.total,opts.detail,opts.title,opts.error]);
+  sources.set(source,{...opts,seq:++serial,firstAt:prev?.firstAt??now,lastAt:prev?.progressKey===key?prev.lastAt:now,progressKey:key});
+  draw();
+ }
  function hide(source){if(sources.delete(source))draw();}
+ function tickActivity(){
+  if(!root||root.hidden||!activityEl)return;
+  const v=pick();if(!v)return;
+  if(v.error){activityEl.textContent='準備に失敗しました。再試行できます。';return;}
+  const elapsed=Math.max(0,Math.floor((performance.now()-(v.firstAt??performance.now()))/1000));
+  const idle=Math.max(0,Math.floor((performance.now()-(v.lastAt??performance.now()))/1000));
+  const state=idle>=40?'通信に時間がかかっています':idle>=15?'次の画像・処理の応答を待っています':'画像と場面の準備を続けています';
+  activityEl.textContent=state+'　・　経過 '+elapsed+' 秒';
+ }
+ setInterval(tickActivity,300);
  function placeForGame(g){
   if(!g)return '物語';
   if(g.sakai314)return '堺市２';
+  if(g.saikaku163)return '堺市１';
+  if(g.kyokai131)return '藤井寺市';
+  if(g.kenko149)return '八尾市';
   if(g.habikino279||g.habikino275)return '羽曳野市';
   if(g.heike181||g.ukyo189)return '東大阪市';
   if(g.chomei201||g.sanetomo211)return '柏原市';
@@ -2264,7 +2297,7 @@ const ImageGate378=(()=>{
  function blocked(){return active&&(pending.size>0||failed.size>0);}
  function refresh(){
   if(!active||(!pending.size&&!failed.size)){if(overlay)overlay.style.display='none';UnifiedLoading455.hide('gate');return;}
-  UnifiedLoading455.show('gate',{place:UnifiedLoading455.placeForGame(game),title:failed.size?'画像を読み込めませんでした':'画像を準備しています',detail:failed.size?'戦闘を一時停止しています。再試行してください。':'戦闘を一時停止しています。',metric:failed.size?'取得失敗 '+failed.size+' 件':'準備中 '+pending.size+' 件',error:failed.size>0,retry:failed.size?()=>retry.click():null,back:failed.size?()=>UnifiedLoading455.goMap():null});
+  UnifiedLoading455.show('gate',{place:UnifiedLoading455.placeForGame(game),title:failed.size?'画像を読み込めませんでした':'画像を準備しています',detail:failed.size?'戦闘を一時停止しています。再試行してください。':'戦闘を一時停止しています。',metric:failed.size?'取得失敗 '+failed.size+' 件':'残り '+pending.size+' 件の画像を確認中',error:failed.size>0,retry:failed.size?()=>retry.click():null,back:failed.size?()=>UnifiedLoading455.goMap():null});
   createUI();overlay.style.display='flex';
   label.textContent=failed.size?`画像の読み込みに失敗しました（${failed.size}件）。\n戦闘は停止しています。再読み込みしてください。`:`画像を取得・展開中：残り ${pending.size} 件\n準備が整うまで戦闘は開始しません。`;
   retry.style.display=failed.size?'inline-block':'none';back.style.display=failed.size?'inline-block':'none';
@@ -2458,6 +2491,16 @@ const StagePreflight379=(()=>{
    (screen==='prologue'||screen==='prologueExit'))||
    (typeof stage2EntryPromise387!=='undefined'&&!!stage2EntryPromise387);
   if(stage2Reserved494)for(const url of selectedCityUrls433('matsu2'))protectedUrls.add(url);
+  // [V495] Keep each novel's already-decoded battle art even if it takes
+  // longer than the normal cache grace period to read the scene.
+  if((screen==='prologue'||screen==='prologueExit')&&typeof storyKind!=='undefined'){
+   const novelCity=storyKind==='opening'?'core':storyKind==='destination119'?
+    SceneEntry394.cityForDestination(destination119):null;
+   if(novelCity)for(const url of selectedCityUrls433(novelCity))protectedUrls.add(url);
+  }
+  // In-flight city preflight is shared by both silent preloading and scene entry.
+  for(const [city,job] of cityJobs)if(job.pending)
+   for(const url of selectedCityUrls433(city))protectedUrls.add(url);
   for(const [url,r] of cached){
    if(protectedUrls.has(url))continue;
    if(r.status==='loading'){
@@ -2477,7 +2520,7 @@ const StagePreflight379=(()=>{
  function show(g){
   const st=prepare(g);if(!st)return false;
   if(st.done&&!st.failed){if(overlay)overlay.style.display='none';UnifiedLoading455.hide('preflight');return false;}
-  UnifiedLoading455.show('preflight',{place:UnifiedLoading455.placeForGame(g),title:st.done&&st.failed?'画像を読み込めませんでした':'物語の準備をしています',detail:st.done&&st.failed?'戦闘を開始できません。再試行してください。':'画像を準備しています',done:st.loaded,total:st.total,error:st.done&&st.failed,retry:st.done&&st.failed?()=>retry(g):null,back:st.done&&st.failed?()=>UnifiedLoading455.goMap():null});
+  UnifiedLoading455.show('preflight',{place:UnifiedLoading455.placeForGame(g),title:st.done&&st.failed?'画像を読み込めませんでした':'物語の準備をしています',detail:st.done&&st.failed?'戦闘を開始できません。再試行してください。':'戦闘画像を取得・展開しています',done:st.loaded,total:st.total,error:st.done&&st.failed,retry:st.done&&st.failed?()=>retry(g):null,back:st.done&&st.failed?()=>UnifiedLoading455.goMap():null});
   if(!overlay){
    overlay=document.createElement('div');overlay.id='stage-preflight379';
    overlay.style.cssText='position:fixed;inset:0;z-index:2147483001;background:rgba(9,12,22,.96);display:flex;align-items:center;justify-content:center;color:#fff;font-family:system-ui,sans-serif;text-align:center;';
@@ -6450,6 +6493,24 @@ function showNovelScene262(scenes,kind,resetTrain=false){
  prologueArt.src=story[0].src;prologueArt.alt=story[0].alt;
  prologueArtNext.classList.remove('visible');prologueEl.classList.remove('leaving');
  setScreen('prologue');prologueEl.hidden=false;storyPage();prologueEl.focus({preventScroll:true});
+ warmBattleDuringNovel495(kind);
+}
+// [V495] A novel and its next battle use the SAME city-preparation job.
+// Future destination chapters only need their REGION_REGISTRY251 preloadGroup.
+// A failed silent warmup is never cached as success: the actual entry owns retry UI.
+function novelBattleCity495(kind){
+ if(kind==='opening')return 'core';
+ if(kind==='destination119')return SceneEntry394.cityForDestination(destination119);
+ return null; // Matsubara 2 keeps its seven-item V494 warmup.
+}
+function warmBattleDuringNovel495(kind){
+ const city=novelBattleCity495(kind);
+ if(!city)return;
+ window.setTimeout(()=>{
+  if(screen!=='prologue'||storyKind!==kind)return;
+  if(kind==='destination119'&&city!==SceneEntry394.cityForDestination(destination119))return;
+  SceneEntry394.prepare(city).catch(error=>console.warn('[V495] ノベル中の先読み（入口で再試行可能）',city,error));
+ },180);
 }
 function startPrologue(){
  if(!ready)return;enableAudio();previewOnly106=false;recordCheckpoint106('opening');game=null;
@@ -7440,20 +7501,35 @@ let stage2CityReady388=false;
 function stage2EntryNotice387(message,failed=false){
  let el=document.getElementById('stage2-entry-notice387');
  if(!message){UnifiedLoading455.hide('stage2');}
- else {const count=message.match(/(\d+)\s*\/\s*(\d+)\s*項目完了/);UnifiedLoading455.show('stage2',{place:'松原市２',title:failed?'画像を読み込めませんでした':'物語の準備をしています',detail:failed?'画像の準備に失敗しました。再試行してください。':'画像を準備しています',metric:count?'準備項目 '+count[1]+' / '+count[2]:'',error:failed,retry:failed?()=>{stage2EntryNotice387('');startStage2Map(stage2PendingRoom387,stage2PendingPractice387);}:null,back:failed?()=>UnifiedLoading455.goMap():null});}
+ else {const count=message.match(/(\d+)\s*\/\s*(\d+)\s*項目完了/);UnifiedLoading455.show('stage2',{place:'松原市２',title:failed?'画像を読み込めませんでした':'物語の準備をしています',detail:failed?'画像の準備に失敗しました。再試行してください。':'画像を準備しています',done:count?Number(count[1]):null,total:count?Number(count[2]):null,unit:'準備項目',metric:count?'準備項目 '+count[1]+' / '+count[2]+' 項目':'',error:failed,retry:failed?()=>{stage2EntryNotice387('');startStage2Map(stage2PendingRoom387,stage2PendingPractice387);}:null,back:failed?()=>UnifiedLoading455.goMap():null});}
  if(!el){el=document.createElement('div');el.id='stage2-entry-notice387';el.style.cssText='position:absolute;inset:0;z-index:35;display:grid;place-items:center;background:#080e1aef;color:#f0e4d0;font:clamp(15px,2vw,24px) serif;letter-spacing:.12em;text-align:center;padding:24px;';arena.appendChild(el);}
  el.hidden=!message;el.replaceChildren();if(!message)return;
  const group=document.createElement('div');group.textContent=message;el.appendChild(group);
  if(failed){const btn=document.createElement('button');btn.textContent='画像を再読み込み';btn.type='button';btn.style.cssText='display:block;margin:24px auto 0;padding:12px 22px;background:#d9c39d;color:#20222b;border:0;border-radius:4px;font:15px sans-serif';btn.onclick=()=>{stage2EntryNotice387('');startStage2Map(stage2PendingRoom387,stage2PendingPractice387);};group.appendChild(btn);}
 }
 // [V494] Each group has a bounded wait; timeout never allows incomplete assets into battle.
-function stage2TimedTask389(name,task,report,timeout=60000){
- let timer;
- return Promise.race([
-  Promise.resolve().then(task),
-  new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error(name+' の読み込みが時間内に完了しませんでした')),timeout);})
- ]).then(value=>{clearTimeout(timer);report(name,'完了');return value;},
-         error=>{clearTimeout(timer);report(name,'失敗');throw new Error(name+': '+String(error?.message||error));});
+// [V495] Many images may legitimately take over one minute in total.
+// Abort only after NO measurable progress, or after a generous safety ceiling.
+function monitorImagePreparation495(promise,lastActivity,label,idleMs=90000,maxMs=600000){
+ const started=performance.now();
+ return new Promise((resolve,reject)=>{
+  let finished=false;
+  const stop=()=>{if(finished)return false;finished=true;clearInterval(watch);return true;};
+  const watch=setInterval(()=>{
+   if(finished)return;
+   const now=performance.now(),last=Number(lastActivity?.())||started;
+   if(now-last>=idleMs||now-started>=maxMs){
+    if(stop())reject(new Error(label+' の画像取得が進んでいません。通信状況を確認して再試行してください。'));
+   }
+  },1000);
+  Promise.resolve(promise).then(value=>{if(stop())resolve(value);},error=>{if(stop())reject(error);});
+ });
+}
+function stage2TimedTask389(name,task,report,timeout=90000,onActivity=null){
+ const started=performance.now();
+ return monitorImagePreparation495(Promise.resolve().then(task),()=>onActivity?.()||started,name,timeout)
+  .then(value=>{report(name,'完了');return value;},
+        error=>{report(name,'失敗');throw new Error(name+': '+String(error?.message||error));});
 }
 // [V494] One shared preload for novel, map and every replay entrance.
 // Two tasks maximum run concurrently (StagePreflight has its own 5-request cap).
@@ -7474,20 +7550,24 @@ function stage2PreloadReport494(){
  const st=stage2PreloadState494;if(!st)return;
  const finished=st.names.filter(n=>st.status[n]==='完了').length;
  const pending=st.names.filter(n=>st.status[n]!=='完了');
+ const commonMatch=/取得\s*(\d+)\s*\/\s*(\d+)\s*枚/.exec(st.status['全編画像']||'');
+ if(commonMatch)st.commonProgress={label:'共通画像',done:Number(commonMatch[1]),total:Number(commonMatch[2])};
+ const snapshot={done:finished,total:st.names.length,unit:'準備項目',metric:'準備項目 '+finished+' / '+st.names.length+' 項目',secondary:st.commonProgress||null,detail:pending.length?'準備中：'+pending.slice(0,2).map(n=>n+'（'+st.status[n]+'）').join('、'):'すべての素材を確認しました'};
  const message='松原市２の画像を読み込んでいます\n'+finished+' / '+st.names.length+' 項目完了'+
   (pending.length?'\n'+pending.slice(0,2).map(n=>n+'：'+st.status[n]).join('　'):'');
- for(const fn of [...stage2PreloadObservers494]){try{fn(message,finished,st.names.length);}catch(e){console.warn('[V494] stage2 progress callback',e);}}
+ for(const fn of [...stage2PreloadObservers494]){try{fn(message,finished,st.names.length,snapshot);}catch(e){console.warn('[V494] stage2 progress callback',e);}}
 }
 function prepareStage2Assets494(onProgress){
  if(onProgress)stage2PreloadObservers494.add(onProgress);
  if(stage2AssetsValid494()){
-  onProgress?.('松原市２の画像は準備済みです',7,7);
+  onProgress?.('松原市２の画像は準備済みです',7,7,{done:7,total:7,unit:'準備項目',metric:'準備項目 7 / 7 項目'});
   return Promise.resolve(true);
  }
  if(stage2EntryPromise387){stage2PreloadReport494();return stage2EntryPromise387;}
  stage2CityReady388=false;stage2Ready=false;
  const jobs=[
   ['全編画像',()=>StagePreflight379.preloadCity('matsu2',(done,total)=>{
+    if(stage2PreloadState494?.activity)stage2PreloadState494.activity['全編画像']=performance.now();
     if(stage2PreloadState494?.status['全編画像']!=='完了'){
      stage2PreloadState494.status['全編画像']='取得 '+done+' / '+total+' 枚';stage2PreloadReport494();
     }
@@ -7499,13 +7579,13 @@ function prepareStage2Assets494(onProgress){
   ['連戦素材',()=>stage2RushReady494&&rushImages.echo?.complete&&rushImages.echo.naturalWidth>0?Promise.resolve():loadRushArt().then(()=>{stage2RushReady494=true;})],
   ['勾玉',()=>powerAtlas105?Promise.resolve():loadPowerItem105()]
  ];
- const st=stage2PreloadState494={names:jobs.map(j=>j[0]),status:Object.fromEntries(jobs.map(j=>[j[0],'待機中']))};
+ const st=stage2PreloadState494={names:jobs.map(j=>j[0]),status:Object.fromEntries(jobs.map(j=>[j[0],'待機中'])),activity:{}};
  let cursor=0;
  const worker=async()=>{
   while(cursor<jobs.length){
    const [name,job]=jobs[cursor++];
-   st.status[name]='読み込み中';stage2PreloadReport494();
-   try{await stage2TimedTask389(name,job,(n,value)=>{st.status[n]=value;stage2PreloadReport494();},60000);}
+   st.status[name]='読み込み中';st.activity[name]=performance.now();stage2PreloadReport494();
+   try{await stage2TimedTask389(name,job,(n,value)=>{st.status[n]=value;st.activity[n]=performance.now();stage2PreloadReport494();},90000,()=>st.activity[name]);}
    catch(e){st.status[name]='失敗';stage2PreloadReport494();throw e;}
   }
  };
@@ -7981,8 +8061,8 @@ const releasePad=e=>{
 for(const type of['pointerup','pointercancel','lostpointercapture'])movePad.addEventListener(type,releasePad);
 function applyControlSettings(){resetInput();const dock=byId('control-dock');dock.classList.toggle('button-mode',controlSettings.mode==='buttons');dock.dataset.position=controlSettings.position;dock.style.setProperty('--ctl-scale421',String(controlSettings.scale/100));byId('control-mode').value=controlSettings.mode;byId('flight-mode').value=controlSettings.flight;byId('touch-position421').value=controlSettings.position;byId('touch-scale421').value=String(controlSettings.scale);byId('device-mode471').value=controlSettings.deviceMode;syncControlDisplay471();if(game){game.player.flightStyle=controlSettings.flight;updateUI();}try{localStorage.setItem('tsukumodo-controls',JSON.stringify(controlSettings));}catch{}fitStage();}
 function openControls(){if(screen==='controls')return;settingsReturn=screen;setScreen('controls');byId('control-mode').focus({preventScroll:true});}
-byId('controls-open').addEventListener('click',openControls);byId('pause-settings').addEventListener('click',openControls);byId('pause-settings471').addEventListener('click',openControls);
-function closeControls(){setScreen(settingsReturn);(settingsReturn==='play'?canvas:settingsReturn==='paused'?byId('pause-settings471'):byId('controls-open')).focus({preventScroll:true});}
+byId('controls-open').addEventListener('click',openControls);byId('pause-settings').addEventListener('click',openControls);
+function closeControls(){setScreen(settingsReturn);(settingsReturn==='play'?canvas:settingsReturn==='paused'?byId('resume'):byId('controls-open')).focus({preventScroll:true});}
 byId('controls-close').addEventListener('click',closeControls);
 byId('device-mode471').addEventListener('change',()=>{controlSettings.deviceMode=['auto','keyboard','touch'].includes(byId('device-mode471').value)?byId('device-mode471').value:'auto';applyControlSettings();});
 byId('control-mode').addEventListener('change',()=>{controlSettings.mode=byId('control-mode').value==='buttons'?'buttons':'pad';applyControlSettings();});
@@ -8014,7 +8094,7 @@ window.addEventListener('blur',()=>{pause(true);resetInput();});document.addEven
 function input(){if(game?.cutin||game?.rush?.freeze||['dying','mirrorIntro','mirrorClearing','rushIntro','rushClearing'].includes(game?.mode))return{};const queued=jumpQueued,touch=touchControl.read();jumpQueued=false;return{touchAxis:touch.axis,dx:clamp(Number(keys.has('ArrowRight')||keys.has('KeyM'))-Number(keys.has('ArrowLeft')||keys.has('KeyN'))+touch.axis+[...moveTouches.values()].reduce((a,b)=>a+b,0),-1,1),jump:queued||touch.queued||touch.jump||keys.has('Space')||keys.has('KeyZ')||keys.has('ArrowUp'),focus:focusTouch||keys.has('ShiftLeft')||keys.has('ShiftRight'),bite:keys.has('KeyX'),target:pointer?.target||null};}
 byId('motion-start').addEventListener('click',()=>{if(!ready)return;HABIKINO_MOTION278.returnTo=null;byId('motion-back').textContent='練習へ';if(byId('motion-state').value.startsWith('habikino:'))Promise.all([loadHabikino275(),loadHabikinoMotion278()]).catch(console.error);CHOMEI200.returnTo=null;previewOnly106=true;game=null;motionTime=0;motionPlaying=true;byId('motion-play').textContent='停止';setScreen('motion');byId('toast').classList.remove('visible');});byId('motion-back').addEventListener('click',()=>{game=null;if(closeSakaiMotion312())return;if(closeHabikinoMotion278())return;if(CHOMEI200.returnTo==='kashiwara'){CHOMEI200.returnTo=null;previewOnly106=CHOMEI200.previousPreview;destination119='27221';showDestinationArrival127();}else setScreen('practice');});byId('motion-play').addEventListener('click',()=>{motionPlaying=!motionPlaying;byId('motion-play').textContent=motionPlaying?'停止':'再生';});byId('motion-slow').addEventListener('click',()=>{motionSpeed=motionSpeed===1?.35:1;byId('motion-slow').textContent=motionSpeed===1?'ゆっくり':'通常速度';});byId('motion-state').addEventListener('change',()=>{motionTime=0;document.body.classList.toggle('habikino-motion278',byId('motion-state').value.startsWith('habikino:'));fitStage();if(byId('motion-state').value.startsWith('sakai:'))loadSakaiActors312().catch(console.error);if(byId('motion-state').value.startsWith('habikino:'))Promise.all([loadHabikino275(),loadHabikinoMotion278()]).catch(console.error);});
 // [V478] Never repaint the battlefield after an event has left play, nor behind a result panel.
-function frame(stamp){requestAnimationFrame(frame);StagePreflight379.transition(screen,game);if(screen!=='play')StagePreflight379.hide();ImageGate378.setActive(screen==='play'&&!!game);ImageGate378.refresh();MenuBgm437.tick(stamp);BattleBgm440.tick(stamp);musicTick();if(!last)last=stamp;let dt=Math.min(.1,(stamp-last)/1000);last=stamp;if(screen==='play'&&game?.resume217>0){game.resume217=Math.max(0,game.resume217-dt);dt=0;}if(screen==='destination119'&&destination119==='27221')drawChomeiPresence200(dt);if(screen==='destination119'&&destination119==='27222')tickHabikinoPreview275(dt);if(screen==='result'&&clearResult)tickStageResult(dt);if(screen==='result')tickUnifiedResult412(dt);if(screen==='prologue'&&!novelModalOpen227()){storyTextTick(dt);storySoundTick();}if(screen==='destinationCutin127'&&destinationCutin127){const shot=destinationCutin127;shot.elapsed=Math.min(CUTIN_DURATION,shot.elapsed+dt);render(ctx,null,destinationBackdrop158(destination119));drawCutin(ctx,{cutin:shot});if(shot.chainIntro413)drawChainVeil413(ctx,{cutin:shot,chainIntro413:true});if(shot.elapsed>=CUTIN_DURATION){if(shot.sakai308)finishSakaiCutin308(shot);else if(shot.kind==='kojiki276'||shot.kind==='shoki276')finishHabikinoCutin276(shot);else if(shot.kind==='ukyo')startUkyo189(!!ukyoCarry189?.practice);else if(shot.kind==='chomei')startChomei201(previewOnly106);else if(shot.kind==='sanetomo')finishSanetomoCutin210();else showDestinationArrival127();}}else if(screen==='motion'){if(motionPlaying)motionTime+=dt*motionSpeed;const selected=byId('motion-state').value;if(selected.startsWith('sakai:')){renderSakaiMotion312(ctx,motionTime,selected);}else if(selected.startsWith('habikino:')){renderHabikinoMotion278(ctx,motionTime,selected);}else if(selected.startsWith('chomei:')){renderChomeiMotion200(ctx,motionTime,selected);}else if(selected.startsWith('book')){renderBookMotion94(ctx,motionTime,selected);}else if(selected==='masuDance'){renderMasuMotion(ctx,motionTime);}else if(selected==='mizuDance'){renderMizuMotion(ctx,motionTime);}else if(selected==='imaDance'){renderImaMotion(ctx,motionTime);}else if(selected==='heroPainted'){renderHeroMotionShowcase(ctx,motionTime);}else if(selected.startsWith('ookagami')){renderMirrorMotion(ctx,motionTime,selected);}else if(selected==='hurt'||selected==='saraHurt'){renderDamagePreview(ctx,motionTime,selected);}else if(selected.startsWith('sara')){renderSaraMotion(ctx,motionTime,selected);}else if(selected.startsWith('cutin')){render(ctx,null,bg);const kind={cutinIse:'ise',cutinYamato:'yamato',cutinHero:'hero'}[selected],t=motionTime%2.8;if(t<2)drawCutin(ctx,{cutin:{kind,elapsed:t}});}else renderMotion(ctx,bg,motionTime,selected);}else if(screen==='play'&&game){ImageGate378.setActive(true);ImageGate378.refresh();if(StagePreflight379.show(game)){accumulator=0;return;}if(ImageGate378.needsWarmup(game)){accumulator=0;renderScene(ctx,game,bg);ImageGate378.refresh();return;}if(ImageGate378.blocked()){accumulator=0;return;}const activeGame478=game;accumulator+=dt;let count=0;while(accumulator>=1/120&&count<13&&screen==='play'&&game===activeGame478){advance134(game,1/120,input());accumulator-=1/120;count++;handleEvents();}if(screen!=='play'||game!==activeGame478){accumulator=0;return;}if(count>=13)accumulator=0;renderScene(ctx,game,bg);if(stamp-lastUI>70){updateUI();lastUI=stamp;}}else if(dirty){if(screen!=='result')renderScene(ctx,game,bg);dirty=false;}if(toastUntil&&stamp>toastUntil){byId('toast').classList.remove('visible');toastUntil=0;}}
+function frame(stamp){requestAnimationFrame(frame);StagePreflight379.transition(screen,game);if(screen!=='play')StagePreflight379.hide();ImageGate378.setActive(screen==='play'&&!!game);ImageGate378.refresh();MenuBgm437.tick(stamp);BattleBgm440.tick(stamp);musicTick();if(!last)last=stamp;let dt=Math.min(.1,(stamp-last)/1000);last=stamp;if(screen==='play'&&game?.resume217>0){game.resume217=Math.max(0,game.resume217-dt);dt=0;}if(screen==='destination119'&&destination119==='27221')drawChomeiPresence200(dt);if(screen==='destination119'&&destination119==='27222')tickHabikinoPreview275(dt);if(screen==='result'&&clearResult)tickStageResult(dt);if(screen==='result')tickUnifiedResult412(dt);if(screen==='prologue'&&!novelModalOpen227()){storyTextTick(dt);storySoundTick();}if(screen==='destinationCutin127'&&destinationCutin127){const shot=destinationCutin127;shot.elapsed=Math.min(CUTIN_DURATION,shot.elapsed+dt);render(ctx,null,destinationBackdrop158(destination119));drawCutin(ctx,{cutin:shot});if(shot.chainIntro413)drawChainVeil413(ctx,{cutin:shot,chainIntro413:true});if(shot.elapsed>=CUTIN_DURATION){if(shot.sakai308)finishSakaiCutin308(shot);else if(shot.kind==='kojiki276'||shot.kind==='shoki276')finishHabikinoCutin276(shot);else if(shot.kind==='ukyo')startUkyo189(!!ukyoCarry189?.practice);else if(shot.kind==='chomei')void SceneEntry394.enter('kashiwara',()=>startChomei201(previewOnly106));else if(shot.kind==='sanetomo')finishSanetomoCutin210();else showDestinationArrival127();}}else if(screen==='motion'){if(motionPlaying)motionTime+=dt*motionSpeed;const selected=byId('motion-state').value;if(selected.startsWith('sakai:')){renderSakaiMotion312(ctx,motionTime,selected);}else if(selected.startsWith('habikino:')){renderHabikinoMotion278(ctx,motionTime,selected);}else if(selected.startsWith('chomei:')){renderChomeiMotion200(ctx,motionTime,selected);}else if(selected.startsWith('book')){renderBookMotion94(ctx,motionTime,selected);}else if(selected==='masuDance'){renderMasuMotion(ctx,motionTime);}else if(selected==='mizuDance'){renderMizuMotion(ctx,motionTime);}else if(selected==='imaDance'){renderImaMotion(ctx,motionTime);}else if(selected==='heroPainted'){renderHeroMotionShowcase(ctx,motionTime);}else if(selected.startsWith('ookagami')){renderMirrorMotion(ctx,motionTime,selected);}else if(selected==='hurt'||selected==='saraHurt'){renderDamagePreview(ctx,motionTime,selected);}else if(selected.startsWith('sara')){renderSaraMotion(ctx,motionTime,selected);}else if(selected.startsWith('cutin')){render(ctx,null,bg);const kind={cutinIse:'ise',cutinYamato:'yamato',cutinHero:'hero'}[selected],t=motionTime%2.8;if(t<2)drawCutin(ctx,{cutin:{kind,elapsed:t}});}else renderMotion(ctx,bg,motionTime,selected);}else if(screen==='play'&&game){ImageGate378.setActive(true);ImageGate378.refresh();if(StagePreflight379.show(game)){accumulator=0;return;}if(ImageGate378.needsWarmup(game)){accumulator=0;renderScene(ctx,game,bg);ImageGate378.refresh();return;}if(ImageGate378.blocked()){accumulator=0;return;}const activeGame478=game;accumulator+=dt;let count=0;while(accumulator>=1/120&&count<13&&screen==='play'&&game===activeGame478){advance134(game,1/120,input());accumulator-=1/120;count++;handleEvents();}if(screen!=='play'||game!==activeGame478){accumulator=0;return;}if(count>=13)accumulator=0;renderScene(ctx,game,bg);if(stamp-lastUI>70){updateUI();lastUI=stamp;}}else if(dirty){if(screen!=='result')renderScene(ctx,game,bg);dirty=false;}if(toastUntil&&stamp>toastUntil){byId('toast').classList.remove('visible');toastUntil=0;}}
 const S163_ASSETS={"urls":{"pose0":"https://lh3.googleusercontent.com/d/1FihRWesh9l3vmTYK5uW4FAAAlHeNp_DW","pose1":"https://lh3.googleusercontent.com/d/1rLhp-8vre5UWQ2Qse28AhoAQgwh2CoUX","pose2":"https://lh3.googleusercontent.com/d/1s79jcRYAUHsPbFdG4HVn_N5skIhnjrfn","pose3":"https://lh3.googleusercontent.com/d/1STlM56FBYcgQfpeEIyYccQMGcvXh8Ojs","pose4":"https://lh3.googleusercontent.com/d/1oQfMZI5W1PIsx8XxbmpnY0ApMvTGSvVM","pose6":"https://lh3.googleusercontent.com/d/1CSXqkTjD_puDR8jf7pSLP1t56H1irt07","prop0":"https://lh3.googleusercontent.com/d/1zBLrb6M1xGUwDuRvrPn1zlTdLc1_IgpT","prop2":"https://lh3.googleusercontent.com/d/1s0euqXNXKiRN7evEqlloI_IdPAD_wWta","prop10":"https://lh3.googleusercontent.com/d/1mEVeG6xm19gJO4WToGKAnRTuesdYkdLc","prop11":"https://lh3.googleusercontent.com/d/1eXyWOz2HHTD5HgCyky6jXtq116StQBdd"},"meta":[{"ax":147,"ay":371,"scale":0.5},{"ax":156,"ay":361,"scale":0.5},{"ax":183,"ay":366,"scale":0.5},{"ax":157,"ay":387,"scale":0.5},{"ax":167,"ay":389,"scale":0.5},{"ax":182,"ay":394,"scale":0.5},{"ax":167,"ay":349,"scale":0.5},{"ax":193,"ay":288,"scale":0.5},{"ax":194,"ay":249,"scale":0.5},{"ax":162,"ay":369,"scale":0.5},{"ax":197,"ay":374,"scale":0.5},{"ax":185,"ay":374,"scale":0.5}]};
 const BOOK_DATA106=[{"key": "eitaizo", "title": "日本永代蔵", "era": "江戸時代（1688年刊）", "genre": "浮世草子・町人物", "author": "井原西鶴", "summary": "6巻30話からなる浮世草子。商人たちが富を築く過程や、財産を失う失敗を描く。倹約・勤勉・才覚だけでなく、商いに伴う欲望や危うさも取り上げる。西鶴の町人物を代表する作品。", "quote": "借銀の利息ほど、恐ろしき物はなし", "translation": "借金の利息ほど、恐ろしいものはない。", "source": "https://kotobanomado.jp/column/1162/"},{"key": "munesanyo", "title": "世間胸算用", "era": "江戸時代（1692年刊）", "genre": "浮世草子・町人物", "author": "井原西鶴", "summary": "5巻20話からなる浮世草子。大晦日の支払いに追われる町人の暮らしを、機知と笑いを交えて描く。「銀一匁の講中」では、婚礼の銀箱に財産が入っていると見せかけ、実際には石や瓦を詰めた仕掛けが明かされる。", "quote": "人の心ほど恐ろしきものは御座らぬ", "translation": "人の心ほど、恐ろしいものはありません。", "source": "https://ohta-masakazu.blog.jp/archives/27798845.html"},{"key": "tsurezure", "title": "徒然草", "era": "鎌倉時代末期（14世紀前半）", "genre": "随筆", "author": "兼好法師", "summary": "序段と243段からなる随筆。身近な出来事や人々の逸話、自然・芸能への考察などを記す。無常観を背景に、経験から得た生活の知恵や、ものの見方を多様な文体で述べる。『枕草子』『方丈記』とともに三大随筆の一つに数えられる。", "quote": "花は盛りに、月は隈なきをのみ見るものかは。", "translation": "桜は満開のときだけ、月は雲に隠れないときだけを見るものだろうか。いや、それだけではない。", "source": "https://ja.wikisource.org/wiki/徒然草"},{"key": "ryoiki", "title": "日本霊異記", "era": "平安時代初期（9世紀前半）", "genre": "仏教説話集", "author": "景戒", "summary": "薬師寺の僧・景戒が編んだ、上・中・下の3巻からなる仏教説話集。日本各地の116話を収め、善悪の行いが報いをもたらす因果応報や、仏・経典の霊験を伝える。後の説話文学に影響を与えた。", "quote": "畜生猶不忘恩", "translation": "動物でさえ、受けた恩を忘れない。", "source": "https://www.nijl.ac.jp/etenji/bungakushi/contents/detail/detail02-01_005.html"},
 {key:'ise',title:'『伊勢物語』',era:'平安時代',genre:'歌物語',author:'未詳',summary:'在原業平を思わせる男を中心に、恋愛や旅などの話を和歌とともに描く。『竹取物語』と並び、初期の仮名物語を代表する。',quote:'白玉か何ぞと人の問ひしとき露と答へて消えなましものを',translation:'真珠なのかとあなたが尋ねたとき、露だと答えて、私も消えてしまえばよかったのに。',source:'https://keirinkan-online.jp/high-classic-japanese/20201022/474/'},
@@ -8118,7 +8198,7 @@ const SceneEntry394=(()=>{
   backButton=document.createElement('button');backButton.type='button';backButton.textContent='地図へ戻る';backButton.style.cssText=style+'border:1px solid #8c7960;background:#303b49;color:#f0e4d0;';
   actions.append(retryButton,backButton);panel.append(label,actions);overlay.append(panel);document.body.append(overlay);
  }
- function ui(message='',onRetry=null,onBack=null){
+ function ui(message='',onRetry=null,onBack=null,progressState=null){
   if(!message)UnifiedLoading455.hide('scene');
   else {
    const lines=message.split('\n'),name=lines[1]||'物語';
@@ -8126,7 +8206,9 @@ const SceneEntry394=(()=>{
    const count=message.match(/(\d+)\s*\/\s*(\d+)\s*枚/);
    const checking=message.includes('戦闘開始を確認');
    const detail=fail?'画像や場面を準備できませんでした。通信状況を確認して再試行してください。':checking?'開始の準備を整えています':message.includes('専用素材')?'画像を準備しています':'画像を準備しています';
-   UnifiedLoading455.show('scene',{place:name,title:fail?'準備できませんでした':name==='大阪府地図'?'地図を準備しています':'物語の準備をしています',detail,done:count?Number(count[1]):null,total:count?Number(count[2]):null,error:fail,retry:onRetry,back:onBack});
+   const done=Number.isFinite(progressState?.done)?progressState.done:count?Number(count[1]):null;
+   const total=Number.isFinite(progressState?.total)?progressState.total:count?Number(count[2]):null;
+   UnifiedLoading455.show('scene',{place:name,title:fail?'準備できませんでした':name==='大阪府地図'?'地図を準備しています':checking?'戦闘開始の準備を整えています':'物語の準備をしています',detail:progressState?.detail||detail,done,total,unit:progressState?.unit||'画像',metric:progressState?.metric||'',secondary:progressState?.secondary||null,error:fail,retry:fail?onRetry:null,back:fail?onBack:null});
   }
   makeUI();overlay.style.display=message?'flex':'none';
   label.textContent=message;
@@ -8144,7 +8226,7 @@ const SceneEntry394=(()=>{
   if(key.startsWith('chomei')||key==='sanetomo0')return 'kashiwara';
   return 'core';
  }
- function cityForDestination(id){return ({'27140':'sakai1','27226':'fuji','27212':'yao','27222':'habikino','27227':'higashiosaka','27221':'kashiwara'})[id]||'core';}
+ function cityForDestination(id){return REGION_REGISTRY251.find(r=>r.city===id)?.preloadGroup||'core';}
  function image(src){return new Promise((resolve,reject)=>{
   const im=new Image();let settled=false;
   const timer=setTimeout(()=>finish(new Error('地図画像の取得がタイムアウトしました')),25000);
@@ -8153,32 +8235,71 @@ const SceneEntry394=(()=>{
   im.onerror=()=>finish(new Error('地図画像を取得できませんでした'));
   im.src=src;
  });}
- function extra(city){
-  if(city==='matsu2')return prepareStage2Assets494();
-  if(city==='yao')return K149.ready?Promise.resolve():loadKenko149();
-  if(city==='fuji')return Promise.all([KYOKAI131.ready?Promise.resolve():loadKyokai131(),load132()]);
-  if(city==='sakai1')return Promise.all([S163.ready?Promise.resolve():loadSaikaku163(),load166(),load167()]);
-  if(city==='habikino')return loadHabikino279();
-  if(city==='higashiosaka')return loadUkyo189(); // [V487] Stage starts only after both the Heike and Ukyo art is decoded.
-  if(city==='kashiwara')return loadSanetomo211(); // [V488] 鴨長明＋源実朝の全専用画像を入口で準備。
-  // Sakai 2 has its own per-phase loader. Never fetch all six phases here.
-  return Promise.resolve();
+ // Each completed task represents a real resolved asset loader, never estimated progress.
+ const extraTaskLabels497={yao:['兼好法師'],fuji:['景戒・人物画像','景戒・弾幕素材'],sakai1:['井原西鶴','西鶴諸国ばなし','箪笥・小道具'],habikino:['古事記・日本書紀'],higashiosaka:['平家物語・右京大夫'],kashiwara:['鴨長明・源実朝']};
+ function extraTasks497(city){
+  if(city==='yao')return [()=>K149.ready?Promise.resolve():loadKenko149()];
+  if(city==='fuji')return [()=>KYOKAI131.ready?Promise.resolve():loadKyokai131(),()=>load132()];
+  if(city==='sakai1')return [()=>S163.ready?Promise.resolve():loadSaikaku163(),()=>load166(),()=>load167()];
+  if(city==='habikino')return [()=>loadHabikino279()];
+  if(city==='higashiosaka')return [()=>loadUkyo189()];
+  if(city==='kashiwara')return [()=>loadSanetomo211()];
+  return [];
+ }
+ function extra(city,progress){
+  const tasks=extraTasks497(city),names=extraTaskLabels497[city]||[];
+  if(!tasks.length)return Promise.resolve();
+  let completed=0;
+  const pending=new Set(tasks.map((_,i)=>i));
+  const report=()=>progress?.(completed,tasks.length,[...pending].map(i=>names[i]||'追加素材').slice(0,2));
+  report();
+  return Promise.all(tasks.map((job,index)=>Promise.resolve().then(job).then(value=>{
+   completed++;pending.delete(index);report();return value;
+  }))).then(()=>true);
  }
  function prepare(city,progress){
   // StagePreflight379 verifies the actual URL cache on each call, rather than
   // trusting a stale 'finished' record. The only shared preparation is in-flight.
-  const existing=jobs.get(city);if(existing)return existing;
+  const existing=jobs.get(city);
+  if(existing){
+   if(progress){existing.listeners.add(progress);if(existing.last){try{progress(...existing.last);}catch(e){console.warn('[V496] entry progress listener',e);}}}
+   return existing.promise;
+  }
+  const record={promise:null,listeners:new Set(progress?[progress]:[]),last:null};
+  const report=(...parts)=>{
+   record.last=parts;
+   for(const observer of record.listeners)try{observer(...parts);}catch(e){console.warn('[V496] entry progress observer',e);}
+  };
   const job=(async()=>{
-   if(city==='world108')await image(MAP_ARROW220);
-   else {
-    await StagePreflight379.preloadCity(city,(n,total)=>progress?.(n,total));
-    progress?.(null,null,'専用素材を準備しています');
-    await extra(city);
+   if(city==='world108'){
+    report(0,1,'地図画像を準備しています',{done:0,total:1,unit:'準備工程',metric:'準備工程 0 / 1',detail:'大阪府の地図画像を取得・展開しています'});
+    await image(MAP_ARROW220);
+    report(1,1,'地図画像の準備が完了しました',{done:1,total:1,unit:'準備工程',metric:'準備工程 1 / 1',detail:'地図画像の準備が完了しました'});
+   }else if(city==='matsu2'){
+    await prepareStage2Assets494((message,done,total,snapshot)=>report(done,total,message,snapshot));
+   }else{
+    const taskCount=extraTasks497(city).length;
+    const totalSteps=1+taskCount;
+    let commonDone=0,commonTotal=0;
+    const snapshot=(steps,detail)=>({done:steps,total:totalSteps,unit:'準備工程',metric:'準備工程 '+steps+' / '+totalSteps,detail,
+     secondary:commonTotal>0?{label:'共通画像',done:commonDone,total:commonTotal}:null});
+    report(0,totalSteps,'共通画像を準備しています',snapshot(0,'共通画像を読み込んでいます'));
+    await StagePreflight379.preloadCity(city,(n,total)=>{
+     commonDone=n;commonTotal=total;
+     report(0,totalSteps,'共通画像を準備しています',snapshot(0,'共通画像を読み込んでいます'));
+    });
+    // The completed common group is a real verified step; extras follow independently.
+    report(1,totalSteps,'共通画像の準備が完了しました',snapshot(1,taskCount?'専用素材を準備しています':'素材の準備が完了しました'));
+    if(taskCount)await extra(city,(count,total,pending)=>{
+     const done=1+count;
+     const detail=pending.length?'専用素材を読み込んでいます：'+pending.join('・'):'すべての素材を確認しました';
+     report(done,totalSteps,detail,snapshot(done,detail));
+    });
    }
    return true;
   })();
-  jobs.set(city,job);
-  job.finally(()=>{if(jobs.get(city)===job)jobs.delete(city);}).catch(()=>{});
+  record.promise=job;jobs.set(city,record);
+  job.finally(()=>{if(jobs.get(city)===record)jobs.delete(city);record.listeners.clear();}).catch(()=>{});
   return job;
  }
  function cancel(){generation++;ui();}
@@ -8186,19 +8307,29 @@ const SceneEntry394=(()=>{
   resetWorldDeparture414();if(screen!=='world108')showWorldMap108();}
  async function enter(city,action){
   const mine=++generation;const name=cityNames[city]||city;
-  let phase='共通画像を確認しています',progress='';
-  const update=(n,total,detail)=>{
+  let phase='共通画像を確認しています',progress='',lastActivity495=performance.now(),lastDone495=-1;
+  let lastCommon496=null;
+  const update=(n,total,detail,snapshot)=>{
    if(mine!==generation)return;
-   if(detail){phase=detail;progress='';}else if(Number.isFinite(total)){phase='共通画像を準備しています';progress=n+' / '+total+' 枚';}
-   ui('素材を読み込んでいます\n'+name+'\n'+phase+(progress?'\n'+progress:''),null,city==='world108'?null:back);
+   if(snapshot){
+    phase='画像を順番に準備しています';progress='';
+    const activityKey=String(snapshot.done)+'/'+String(snapshot.total)+'/'+String(snapshot.secondary?.done??'');
+    if(activityKey!==lastCommon496){lastActivity495=performance.now();lastCommon496=activityKey;}
+    ui('素材を読み込んでいます\n'+name+'\n'+phase,null,null,snapshot);
+    return;
+   }
+   if(detail){phase=detail;progress='';lastActivity495=performance.now();}
+   else if(Number.isFinite(total)){phase='共通画像を準備しています';progress=n+' / '+total+' 枚';
+    if(n!==lastDone495){lastDone495=n;lastActivity495=performance.now();}}
+   const data=Number.isFinite(total)?{done:n,total,unit:'画像',metric:'共通画像 '+n+' / '+total+' 枚'}:null;
+   ui('素材を読み込んでいます\n'+name+'\n'+phase+(progress?'\n'+progress:''),null,null,data);
   };
   update();
-  let timeoutId=null;
   try{
    // The timeout is an error, not permission to start with missing assets.
-   await Promise.race([prepare(city,update),new Promise((_,reject)=>{timeoutId=setTimeout(()=>reject(new Error('素材の準備に時間がかかりすぎています。再読み込みしてください。')),60000);})]);
+   await monitorImagePreparation495(prepare(city,update),()=>lastActivity495,name);
    if(mine!==generation)return false;
-   ui('戦闘開始を確認しています\n'+name,null,city==='world108'?null:back);
+   ui('戦闘開始を確認しています\n'+name,null,null,{detail:'画像の準備が完了しました。開始処理を確認しています。',metric:'画像の準備完了'});
    const oldGame=game,oldScreen=screen;
    const outcome=await action();
    if(mine!==generation)return false;
@@ -8213,7 +8344,7 @@ const SceneEntry394=(()=>{
     ui('素材・場面の準備に失敗しました\n'+name+'\n'+String(error?.message||error),()=>enter(city,action),city==='world108'?null:back);
    }
    return false;
-  }finally{if(timeoutId!==null)clearTimeout(timeoutId);}
+  }
  }
  function invalidate(city){jobs.delete(city);}
  return {enter,prepare,cityForKey,cityForDestination,invalidate,cancel};
@@ -9079,25 +9210,25 @@ const REGION_REGISTRY251=[
  {id:'matsu2',group:'松原市　２',name:'松原市',replayNumber:2,part:'第二話',theme:'『更級日記』・四鏡',place:'九十九堂へ続く、鏡の夜。',city:null,
   checkpoints:[['stage2','更級日記','松原市２・道中'],['mirror','大鏡','大鏡戦'],['rush0','今鏡','今鏡戦'],['rush1','水鏡','水鏡戦'],['rush2','増鏡','増鏡戦']],
   clearRoute:'chapter3',rewards:{matsu2:{books:MIRROR_BOOK_KEYS94}}},
- {id:'sakai',group:'堺市　１',name:'堺市',part:'第一話',theme:'『日本永代蔵』・『世間胸算用』',place:'商いの町を、物語が駆ける。',city:'27140',checkpointOrder:3,cutin:'saikaku',routes:{background:startSaikaku163,arrival:startSaikaku163},
+ {id:'sakai',preloadGroup:'sakai1',group:'堺市　１',name:'堺市',part:'第一話',theme:'『日本永代蔵』・『世間胸算用』',place:'商いの町を、物語が駆ける。',city:'27140',checkpointOrder:3,cutin:'saikaku',routes:{background:startSaikaku163,arrival:startSaikaku163},
   checkpoints:[['saikaku0','日本永代蔵','西鶴戦・日本永代蔵'],['saikaku1','世間胸算用','西鶴戦・世間胸算用']],
   rewards:{sakai1:{books:['eitaizo','munesanyo']}}},
  {id:'sakai2',group:'堺市　２',name:'堺市',replayNumber:2,part:'第二話',theme:'『好色一代男』・『金々先生栄花夢』・『春色梅児誉美』・『仮名手本忠臣蔵』・『偐紫田舎源氏』・『江戸生艶気樺焼』',city:null,presentationOnly:false,cutins:SAKAI_CUTIN_ORDER308,checkpoints:[['sakai2p0', '好色一代男', '西鶴・好色丸'], ['sakai2p1', '金々先生栄花夢', '春町・栄花の夢'], ['sakai2p2', '春色梅児誉美', '春水・梅の縁'], ['sakai2p3', '仮名手本忠臣蔵', '出雲・討入り'], ['sakai2p4', '偐紫田舎源氏', '種彦・絵の中へ'], ['sakai2p5', '江戸生艶気樺焼', '京伝・評判']],rewards:{sakai2:{books:SAKAI_BOOKS309.filter(book=>SAKAI_CUTIN_ORDER308.includes(book.cutin)).map(book=>book.key)}}},
- {id:'fuji',group:'藤井寺市',name:'藤井寺市',part:'',theme:'『日本霊異記』',place:'葛井寺の門前で、怪異と向き合う。',city:'27226',checkpointOrder:2,cutin:'kyokai',routes:{arrival:startKyokai131,afterCutin:startKyokai131},
+ {id:'fuji',preloadGroup:'fuji',group:'藤井寺市',name:'藤井寺市',part:'',theme:'『日本霊異記』',place:'葛井寺の門前で、怪異と向き合う。',city:'27226',checkpointOrder:2,cutin:'kyokai',routes:{arrival:startKyokai131,afterCutin:startKyokai131},
   checkpoints:[['kyokai','日本霊異記','景戒戦']],rewards:{fuji:{books:['ryoiki'],city:true}}},
- {id:'yao',group:'八尾市',name:'八尾市',part:'',theme:'『徒然草』',place:'暮らしの傍らに、兼好法師がいる。',city:'27212',cutin:'kenko',routes:{background:startKenko149,arrival:startKenko149},
+ {id:'yao',preloadGroup:'yao',group:'八尾市',name:'八尾市',part:'',theme:'『徒然草』',place:'暮らしの傍らに、兼好法師がいる。',city:'27212',cutin:'kenko',routes:{background:startKenko149,arrival:startKenko149},
   checkpoints:[['kenko','徒然草','兼好法師戦']],rewards:{yao:{books:['tsurezure'],city:true}}},
- {id:'kashi',group:'柏原市',name:'柏原市',part:'',theme:'『方丈記』・『金槐和歌集』',place:'災いの方丈から、波と花の歌景へ。',city:'27221',cutin:'chomei',
+ {id:'kashi',preloadGroup:'kashiwara',group:'柏原市',name:'柏原市',part:'',theme:'『方丈記』・『金槐和歌集』',place:'災いの方丈から、波と花の歌景へ。',city:'27221',cutin:'chomei',
   checkpoints:[['chomei0','方丈記・うたかた','鴨長明・うたかた'],['chomei2','方丈記・大火','鴨長明・大火'],['chomei4','方丈記・辻風','鴨長明・辻風'],['chomei5','方丈記・大地震','鴨長明・大地震'],['sanetomo0','金槐和歌集','源実朝・金槐和歌集']],
   rewards:{kashi:{books:['hojoki211','kinkai211'],city:true}}},
- {id:'higashi',group:'東大阪市',name:'東大阪市',part:'',theme:'『平家物語』・『建礼門院右京大夫集』',place:'軍勢の夜を越え、雪の逢瀬へ。',city:'27227',cutin:'heike',routes:{background:startHeike181},
+ {id:'higashi',preloadGroup:'higashiosaka',group:'東大阪市',name:'東大阪市',part:'',theme:'『平家物語』・『建礼門院右京大夫集』',place:'軍勢の夜を越え、雪の逢瀬へ。',city:'27227',cutin:'heike',routes:{background:startHeike181},
   checkpoints:[['heike0','平家物語・奈良炎上','平家物語・奈良炎上'],['heike1','平家物語・敦盛最期','平家物語・敦盛最期'],['heike2','平家物語・扇の的','平家物語・扇の的'],['heike3','平家物語・壇ノ浦','平家物語・壇ノ浦'],['ukyo0','建礼門院右京大夫集・雪の逢瀬','右京大夫・雪の第一弾幕']],
   rewards:{heike:{books:['heike']},higashi:{books:['ukyo217'],city:true}}},
  // [V474] 大阪市１はノベルのみ。ステージ/マップ市クリア/報酬は定義しない。
  // 現行のクリア処理が既に記録する completed:'osaka1' を一覧表示するだけ。
  {id:'osaka1',group:'大阪市　１',name:'大阪市',replayNumber:1,part:'',theme:'近松門左衛門',place:'道頓堀で、百が喫する敗北。',city:null,novelOnly474:true,checkpoints:[]},
  // 羽曳野市：二作品を一つの章として登録。既存の再開順は保持する。
- {id:'habikino',group:'羽曳野市',name:'羽曳野市',part:'',theme:'『古事記』・『日本書紀』',place:'古市の夜、二つの神話が開く。',city:'27222',routes:{background:startHabikino279},
+ {id:'habikino',preloadGroup:'habikino',group:'羽曳野市',name:'羽曳野市',part:'',theme:'『古事記』・『日本書紀』',place:'古市の夜、二つの神話が開く。',city:'27222',routes:{background:startHabikino279},
   cutin:'kojiki276',cutins:['kojiki276','shoki276'],checkpoints:[["habikino0", "因幡の白兎", "羽曳野市・因幡の白兎"], ["habikino1", "八俣の大蛇", "羽曳野市・八俣の大蛇"], ["habikino2", "天地開闢", "羽曳野市・天地開闢"], ["habikino3", "禊と三貴子", "羽曳野市・禊と三貴子"], ["habikino4", "日神と月神", "羽曳野市・日神と月神"], ["habikino5", "天の石屋戸", "羽曳野市・天の石屋戸"], ["habikino6", "二つの神話", "羽曳野市・二つの神話"]],rewards:{habikino:{books:['kojiki277','shoki277'],city:true}}}
 ];
 // 旧データ形式・旧関数の参照先は保持し、全て同じ登録簿から生成する。
@@ -9260,7 +9391,11 @@ function launchDestinationStage230(phase){
  SceneEntry394.enter(city,()=>start()).catch(e=>console.error('[V433] destination route',e));
  return true;
 }
-function showDestinationBackground119(){if(destination119==='27221')loadKashiwara201().catch(console.error);if(launchDestinationStage230('background'))return;
+function showDestinationBackground119(){
+ // [V495] Even regions without a novel can decode battle art during their cut-in.
+ const entranceCity495=SceneEntry394.cityForDestination(destination119);
+ if(entranceCity495!=='core')SceneEntry394.prepare(entranceCity495).catch(e=>console.warn('[V495] 登場演出中の先読み',entranceCity495,e));
+ if(launchDestinationStage230('background'))return;
  const kind=DESTINATION_CUTINS127[destination119];if(!kind||!cutinImages?.[kind]){showDestinationArrival127();return;}
  if(launchDestinationStage230('afterCutin'))return;prologueEl.hidden=true;game=null;resetInput();destinationCutin127={kind,elapsed:0,duration:CUTIN_DURATION};setScreen('destinationCutin127');canvas.setAttribute('aria-label',BOSS_META103[kind].title+'の登場');canvas.focus({preventScroll:true});sfx('cutinStart',{kind});
 }
@@ -11375,7 +11510,7 @@ const K201={ready:false,loading:null,images:{},starting:null};
 const C201_PHASES={0:['うたかた',18],1:['方丈',2],2:['安元の大火',18],3:['外からの手',2.4],4:['治承の辻風',18],5:['元暦の大地震',20],6:['方丈、崩落',C206_END.end]};
 function loadKashiwara201(){
  if(K201.ready)return Promise.resolve(K201);if(K201.loading)return K201.loading;
- K201.loading=Promise.all([loadChomei200(),...Object.entries(K201_ASSETS).map(([key,url])=>new Promise((ok,no)=>{const im=new Image();im.onload=()=>{K201.images[key]=im;ok();};im.onerror=()=>no(new Error('kashiwara:'+key));im.src=url;}))]).then(()=>{if(!CHOMEI200.ready)throw new Error('chomei motion');K201.ready=true;return K201;}).catch(e=>{K201.loading=null;throw e;});return K201.loading;
+ K201.loading=Promise.all([loadChomei200(),...Object.entries(K201_ASSETS).map(([key,url])=>K201.images[key]?.complete&&K201.images[key].naturalWidth>0?Promise.resolve(K201.images[key]):loadEmbeddedImage247(url,im=>im,()=>new Error('kashiwara:'+key)).then(im=>{K201.images[key]=im;return im;}))]).then(()=>{if(!CHOMEI200.ready)throw new Error('chomei motion');K201.ready=true;return K201;}).catch(e=>{K201.loading=null;throw e;});return K201.loading;
 }
 // 柏原市二連戦の共通生成・起動。ステージ固有の初期値やイベントは各開始関数で設定する。
 function createKashiwaraBattle266(practice){
@@ -11772,15 +11907,25 @@ function cChomeiQuote206(c,g){
 
 // The next battle is introduced here; this cut-in does not award city completion.
 let sanetomoReturn210=null;
+let sanetomoCutinWaiting495=false;
 function playSanetomoCutin210(fromChomei=false){
  if(!ready||!cutinImages?.sanetomo)return false;
+ sanetomoCutinWaiting495=false;
  if(fromChomei)markClearedPoint492('chomei5');
  loadSanetomo211().catch(console.error);sanetomoReturn210=fromChomei?'chomei':'practice';destination119='27221';prologueEl.hidden=true;resetInput();
  destinationCutin127={kind:'sanetomo',elapsed:0,duration:CUTIN_DURATION,chainIntro413:fromChomei};setScreen('destinationCutin127');canvas.setAttribute('aria-label','源実朝　金槐和歌集　登場カットイン');canvas.focus({preventScroll:true});sfx('cutinStart',{kind:'sanetomo',chain:fromChomei});return true;
 }
 function finishSanetomoCutin210(){
- const target=sanetomoReturn210;if(target==='chomei'&&!S211.ready){loadSanetomo211().catch(console.error);if(destinationCutin127)destinationCutin127.elapsed=1.55;return;}sanetomoReturn210=null;
- if(target==='chomei')startSanetomo211(!!game?.practice,true);else{setScreen('practice');byId('practice-phase').focus({preventScroll:true});}
+ const target=sanetomoReturn210;
+ if(target==='chomei'){
+  if(sanetomoCutinWaiting495)return;
+  sanetomoCutinWaiting495=true; // Retry remains owned by SceneEntry394; never relaunch each frame.
+  void SceneEntry394.enter('kashiwara',()=>startSanetomo211(!!game?.practice,true)).then(ok=>{
+   if(ok){sanetomoReturn210=null;sanetomoCutinWaiting495=false;}
+  });
+  return;
+ }
+ sanetomoReturn210=null;setScreen('practice');byId('practice-phase').focus({preventScroll:true});
 }
 byId('sanetomo-replay210').addEventListener('click',()=>{enableAudio();playSanetomoCutin210(false);});
 
@@ -11806,6 +11951,7 @@ function startSanetomo211(practice=true,carry=false){
  const p=g.player;p.x=205;p.y=520;p.vy=0;p.grounded=false;p.hp=prev?.player.hp||3;p.level=Math.max(2,prev?.player.level||2);p.invuln=1.5;
  g.sanetomo211={age:0,t:0,hp:680,maxHp:680,stage:0,hit:0,seq:0,serial:0,cues:[],waves:[],boats:[],fx:[],closing:null,done:false,endingSound:false,timeout:false,boatBounces:0,landedBoat:null,poemsSeen:new Set([0]),seeds:new Set(),lastBurst:-99};
  g.externalBack131=drawSanetomoBack211;g.externalFront132=drawSanetomoFront211;previewOnly106=!!practice;enterKashiwaraBattle266(g,'sanetomo0','柏原市　源実朝　金槐和歌集　30秒の歌景',practice);
+ sanetomoCutinWaiting495=false;sanetomoReturn210=null;
  g.events.push({type:'dialogue162',id:'sanetomo-dedication211',speaker:'源実朝',text:'長明殿。あなたへの手向けにこの絶景を。',duration:3.2});return true;
 }
 function sEase211(a){return cEase200(a);}
@@ -13281,11 +13427,14 @@ function releaseSakaiRun488(){
  SAKAI_MATERIAL_STATE313.group=null;
  SAKAI_MOTION312.images={};
 }
-async function preloadSakaiRun488(){
+async function preloadSakaiRun488(onProgress){
  sakaiWholeRunRetain488=true;
  let index=0;
+ const active=new Set();
+ const publish=()=>onProgress?.(SAKAI_PHASE_READY429.size,6,[...active].map(i=>SAKAI_PHASE_NAMES429[i]));
  // Two phases at a time limits concurrency while keeping all six ready before battle.
- const worker=async()=>{while(index<6){const phase=index++;await loadSakaiPhaseAssets429(phase);}};
+ const worker=async()=>{while(index<6){const phase=index++;active.add(phase);publish();try{await loadSakaiPhaseAssets429(phase);}finally{active.delete(phase);publish();}}};
+ publish();
  const jobs=await Promise.allSettled([worker(),worker()]);
  // Await both workers even if one fails: never leave a late image load
  // repopulating a just-cleared stage after the error screen appears.
@@ -13296,10 +13445,10 @@ async function preloadSakaiRun488(){
 }
 const SAKAI_PHASE_NAMES429=['西鶴・好色丸','春町・栄花の夢','春水・梅の縁','出雲・討入り','種彦・絵の中へ','京伝・評判'];
 let sakaiOverlayNode429=null;
-function sakaiStageOverlay429(message,retry=null,detail=''){
+function sakaiStageOverlay429(message,retry=null,detail='',progress=null){
  const failed=/失敗|読み込めません/.test(message);
  const phaseName=SAKAI_PHASE_NAMES429.find(n=>detail.includes(n));
- UnifiedLoading455.show('sakai',{place:'堺市２'+(phaseName?' / '+phaseName:''),title:failed?'画像を読み込めませんでした':message.startsWith('次の戦闘')?'次の戦闘を準備しています':'物語の準備をしています',detail:failed?'画像を準備できませんでした。再試行してください。':'画像を準備しています',error:failed,retry:retry||null,back:()=>{SAKAI_BATTLE314.token++;SAKAI_BATTLE314.loading=false;hideSakaiOverlay429();if(game?.sakai314)game=null;UnifiedLoading455.goMap();}});
+ UnifiedLoading455.show('sakai',{place:'堺市２'+(phaseName?' / '+phaseName:''),title:failed?'画像を読み込めませんでした':message.startsWith('次の戦闘')?'次の戦闘を準備しています':'物語の準備をしています',detail:failed?'画像を準備できませんでした。再試行してください。':detail||'画像を準備しています',done:progress?.done??null,total:progress?.total??null,unit:'連戦素材',metric:progress?('連戦素材 '+progress.done+' / '+progress.total+' 組'):'',error:failed,retry:retry||null,back:failed?()=>{SAKAI_BATTLE314.token++;SAKAI_BATTLE314.loading=false;hideSakaiOverlay429();if(game?.sakai314)game=null;UnifiedLoading455.goMap();}:null});
  if(!sakaiOverlayNode429){
   const root=document.createElement('section');root.id='sakai-loading429';root.setAttribute('role','status');root.setAttribute('aria-live','polite');
   root.style.cssText='position:fixed;inset:0;z-index:2147483000;background:#080e1bee;display:flex;align-items:center;justify-content:center;padding:18px;color:#eee2cf;font-family:serif;text-align:center;';
@@ -13313,7 +13462,7 @@ function sakaiStageOverlay429(message,retry=null,detail=''){
   actions.append(retryBtn,cancelBtn);card.append(title,note,actions);root.append(card);document.body.append(root);
   sakaiOverlayNode429={root,title,note,retryBtn,cancelBtn};
  }
- const o=sakaiOverlayNode429;o.root.hidden=false;o.root.style.display='flex';o.title.textContent=message;o.note.textContent=detail;o.retryBtn.hidden=!retry;o.cancelBtn.hidden=false;
+ const o=sakaiOverlayNode429;o.root.hidden=false;o.root.style.display='flex';o.title.textContent=message;o.note.textContent=detail;o.retryBtn.hidden=!retry;o.cancelBtn.hidden=!failed;
  o.retryBtn.onclick=retry?()=>{o.retryBtn.disabled=true;retry();}:null;o.retryBtn.disabled=false;
 }
 function hideSakaiOverlay429(){UnifiedLoading455.hide('sakai');if(sakaiOverlayNode429){sakaiOverlayNode429.root.hidden=true;sakaiOverlayNode429.root.style.display='none';}}
@@ -13352,7 +13501,7 @@ async function startSakaiBattle314(practice=false,phase=0){
  SAKAI_BATTLE314.loading=true;
  sakaiStageOverlay429('堺市２の素材を準備しています',null,'六人連戦の全画像を準備しています。終了まで画像の追加読み込みは行いません。');
  try{
-  await preloadSakaiRun488();
+  await preloadSakaiRun488((done,total,active)=>{if(token===SAKAI_BATTLE314.token)sakaiStageOverlay429('堺市２の素材を準備しています',null,active?.length?'読み込み中：'+active.join('・'):'六戦分の素材を確認しています。',{done,total});});
   if(token!==SAKAI_BATTLE314.token||screen!==sourceScreen){releaseSakaiRun488();return false;}
   prepareRegionalScene267('27140',practice);resetInput();const g=newRegionalBattle243(practice,true);g.boss=null;g.ise=null;
   g.sakai314={phase,age:0,t:0,hp:180,maxHp:180,beat:-1,objects:[],swap:null,actor:null,old:null,meta:null,completed:[],serial:0,savedMomoHp:3,stats:{hits:0,shots:0,eaten:0,peak:0}};
@@ -13369,7 +13518,7 @@ function sakaiPhase314(g,phase,first=false){
  if(!SAKAI_PHASE_READY429.has(phase)){
   if(g.sakai314.waitingPhase429===phase)return;
   g.sakai314.waitingPhase429=phase;
-  sakaiStageOverlay429('次の戦闘を準備しています',null,SAKAI_PHASE_NAMES429[phase]);
+  sakaiStageOverlay429('次の戦闘を準備しています',null,SAKAI_PHASE_NAMES429[phase]+'の画像を読み込んでいます',{done:0,total:1});
    loadSakaiPhaseAssets429(phase).then(()=>{
     if(game!==g||g.sakai314.waitingPhase429!==phase)return;
     // V431: keep the loading state active until stage initialization succeeds.

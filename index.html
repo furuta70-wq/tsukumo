@@ -2452,6 +2452,12 @@ const StagePreflight379=(()=>{
    states.delete(currentGame);currentGame=null;retiredAt=0;
   }
   const protectedUrls=currentGame?new Set((states.get(currentGame)?.urls)||[]):new Set();
+  // [V494] The epilogue actively preloads Matsubara 2. Do not evict early
+  // images while the player reads slowly, or while the scene-entry gate runs.
+  const stage2Reserved494=(typeof storyKind!=='undefined'&&storyKind==='ending'&&
+   (screen==='prologue'||screen==='prologueExit'))||
+   (typeof stage2EntryPromise387!=='undefined'&&!!stage2EntryPromise387);
+  if(stage2Reserved494)for(const url of selectedCityUrls433('matsu2'))protectedUrls.add(url);
   for(const [url,r] of cached){
    if(protectedUrls.has(url))continue;
    if(r.status==='loading'){
@@ -2489,7 +2495,7 @@ const StagePreflight379=(()=>{
   return true;
  }
  function hide(){if(overlay)overlay.style.display='none';UnifiedLoading455.hide('preflight');}
- return {prepare,ready,status,show,hide,retry,releaseUnused,transition,diagnostics,classify,preloadCity,acquire,registerCityExtra:(city,provider)=>cityExtraUrls487.set(city,provider)};
+ return {prepare,ready,status,show,hide,retry,releaseUnused,transition,diagnostics,classify,preloadCity,cityCached:cityCached433,acquire,registerCityExtra:(city,provider)=>cityExtraUrls487.set(city,provider)};
 })();
 
 setInterval(()=>StagePreflight379.releaseUnused(),10000);
@@ -6453,7 +6459,7 @@ function startChapter3Novel99(){
  if(!ready)return;rememberBooks106(['sara']);enableAudio();clearResult=null;
  showNovelScene262(CHAPTER3_NOVEL99,'chapter3',true);sfx('storyDust101');
 }
-function startEpilogue(){showNovelScene262(EPILOGUE,'ending',true);}
+function startEpilogue(){showNovelScene262(EPILOGUE,'ending',true);warmStage2DuringNovel494();}
 function advancePrologue(){
  if(screen!=='prologue'||storyTransitioning||storyTurning98||novelModalOpen227())return;
  const length=Array.from(prologueText()).length;
@@ -7440,9 +7446,8 @@ function stage2EntryNotice387(message,failed=false){
  const group=document.createElement('div');group.textContent=message;el.appendChild(group);
  if(failed){const btn=document.createElement('button');btn.textContent='画像を再読み込み';btn.type='button';btn.style.cssText='display:block;margin:24px auto 0;padding:12px 22px;background:#d9c39d;color:#20222b;border:0;border-radius:4px;font:15px sans-serif';btn.onclick=()=>{stage2EntryNotice387('');startStage2Map(stage2PendingRoom387,stage2PendingPractice387);};group.appendChild(btn);}
 }
-// [V389] City preload diagnostics: the 120/120 count is only the preflight
-// download group. Additional stage-specific loaders must finish too.
-function stage2TimedTask389(name,task,report,timeout=35000){
+// [V494] Each group has a bounded wait; timeout never allows incomplete assets into battle.
+function stage2TimedTask389(name,task,report,timeout=60000){
  let timer;
  return Promise.race([
   Promise.resolve().then(task),
@@ -7450,50 +7455,111 @@ function stage2TimedTask389(name,task,report,timeout=35000){
  ]).then(value=>{clearTimeout(timer);report(name,'完了');return value;},
          error=>{clearTimeout(timer);report(name,'失敗');throw new Error(name+': '+String(error?.message||error));});
 }
-function startStage2Map(room=0,practice=false){
- if(!ready)return;
- stage2PendingRoom387=room;stage2PendingPractice387=practice;
- if(!stage2CityReady388){
-  if(stage2EntryPromise387)return;
-  stage2EntryNotice387('松原市②の画像をまとめて読み込んでいます');
-  const names=['全編画像','商店街背景','菅原孝標女','更級日記の本','四鏡素材','連戦素材','勾玉'];
-  const status=Object.fromEntries(names.map(n=>[n,'待機中']));
-  const show=()=>{
-   const finished=names.filter(n=>status[n]==='完了').length;
-   const waiting=names.filter(n=>status[n]!=='完了');
-   stage2EntryNotice387('松原市②の画像を読み込んでいます\n'+finished+' / '+names.length+' 項目完了\n'+waiting.slice(0,2).map(n=>n+'：'+status[n]).join('　'));
-  };
-  const report=(name,value)=>{status[name]=value;show();};
-  const progress=(done,total)=>{status['全編画像']='取得 '+done+' / '+total+' 枚';show();};
-  // Reuse in-flight loaders. Clearing their promise would trigger duplicate
-  // network requests and can stall iPad's image request queue.
-  const jobs=[
-   ['全編画像',()=>StagePreflight379.preloadCity('matsu2',progress)],
-   ['商店街背景',()=>loadStage2Maps()],
-   ['菅原孝標女',()=>loadSaraArt()],
-   ['更級日記の本',()=>loadSaraBook()],
-   ['四鏡素材',()=>loadMirrorArt()],
-   ['連戦素材',()=>loadRushArt()],
-   ['勾玉',()=>loadPowerItem105()]
-  ];
-  show();
-  stage2EntryPromise387=Promise.all(jobs.map(([name,task])=>stage2TimedTask389(name,task,report))).then(()=>{
-   stage2CityReady388=true;stage2Ready=true;stage2EntryPromise387=null;
-   stage2EntryNotice387('');startStage2Map(stage2PendingRoom387,stage2PendingPractice387);
-  }).catch(e=>{
-   stage2EntryPromise387=null;
-   console.error('[V389] 松原市②の事前読み込み停止',e);
-   // Reset only failed legacy loaders. A retry must create a new request.
-   if(status['商店街背景']==='失敗')stage2Loading=null;
-   if(status['菅原孝標女']==='失敗')saraLoading=null;
-   if(status['勾玉']==='失敗')powerItemLoading105=null;
-   stage2EntryNotice387('松原市２の読み込みが完了しませんでした。 ／ '+String(e.message||e)+'／ 再読み込みしてください。',true);
-  });
-  return;
+// [V494] One shared preload for novel, map and every replay entrance.
+// Two tasks maximum run concurrently (StagePreflight has its own 5-request cap).
+// A completed flag alone is never enough: cached city images may have expired.
+let stage2EntryRequest494=0;
+let stage2PreloadObservers494=new Set();
+let stage2PreloadState494=null;
+let stage2RushReady494=false;
+function stage2AssetsValid494(){
+ const valid=im=>!!im&&im.complete&&im.naturalWidth>0;
+ return !!(stage2CityReady388&&stage2Ready&&
+  StagePreflight379.cityCached('matsu2')&&
+  stage2Images.length===STAGE2_IMAGE_DATA.length&&stage2Images.every(valid)&&
+  valid(saraArt)&&valid(saraBookArt)&&valid(mirrorArt)&&valid(crisisArt)&&
+  valid(rushImages.echo)&&!!powerAtlas105);
+}
+function stage2PreloadReport494(){
+ const st=stage2PreloadState494;if(!st)return;
+ const finished=st.names.filter(n=>st.status[n]==='完了').length;
+ const pending=st.names.filter(n=>st.status[n]!=='完了');
+ const message='松原市２の画像を読み込んでいます\n'+finished+' / '+st.names.length+' 項目完了'+
+  (pending.length?'\n'+pending.slice(0,2).map(n=>n+'：'+st.status[n]).join('　'):'');
+ for(const fn of [...stage2PreloadObservers494]){try{fn(message,finished,st.names.length);}catch(e){console.warn('[V494] stage2 progress callback',e);}}
+}
+function prepareStage2Assets494(onProgress){
+ if(onProgress)stage2PreloadObservers494.add(onProgress);
+ if(stage2AssetsValid494()){
+  onProgress?.('松原市２の画像は準備済みです',7,7);
+  return Promise.resolve(true);
  }
+ if(stage2EntryPromise387){stage2PreloadReport494();return stage2EntryPromise387;}
+ stage2CityReady388=false;stage2Ready=false;
+ const jobs=[
+  ['全編画像',()=>StagePreflight379.preloadCity('matsu2',(done,total)=>{
+    if(stage2PreloadState494?.status['全編画像']!=='完了'){
+     stage2PreloadState494.status['全編画像']='取得 '+done+' / '+total+' 枚';stage2PreloadReport494();
+    }
+   })],
+  ['商店街背景',()=>stage2Images.length===2&&stage2Images.every(im=>im?.complete&&im.naturalWidth>0)?Promise.resolve():loadStage2Maps()],
+  ['菅原孝標女',()=>saraArt?.complete&&saraArt.naturalWidth>0?Promise.resolve():loadSaraArt()],
+  ['更級日記の本',()=>saraBookArt?.complete&&saraBookArt.naturalWidth>0?Promise.resolve():loadSaraBook()],
+  ['四鏡素材',()=>mirrorArt?.complete&&mirrorArt.naturalWidth>0&&crisisArt?.complete&&crisisArt.naturalWidth>0?Promise.resolve():loadMirrorArt()],
+  ['連戦素材',()=>stage2RushReady494&&rushImages.echo?.complete&&rushImages.echo.naturalWidth>0?Promise.resolve():loadRushArt().then(()=>{stage2RushReady494=true;})],
+  ['勾玉',()=>powerAtlas105?Promise.resolve():loadPowerItem105()]
+ ];
+ const st=stage2PreloadState494={names:jobs.map(j=>j[0]),status:Object.fromEntries(jobs.map(j=>[j[0],'待機中']))};
+ let cursor=0;
+ const worker=async()=>{
+  while(cursor<jobs.length){
+   const [name,job]=jobs[cursor++];
+   st.status[name]='読み込み中';stage2PreloadReport494();
+   try{await stage2TimedTask389(name,job,(n,value)=>{st.status[n]=value;stage2PreloadReport494();},60000);}
+   catch(e){st.status[name]='失敗';stage2PreloadReport494();throw e;}
+  }
+ };
+ // Jobs that were already started must settle before the shared promise is reset.
+ stage2EntryPromise387=Promise.allSettled([worker(),worker()]).then(results=>{
+  const errors=results.filter(r=>r.status==='rejected');
+  if(errors.length)throw errors[0].reason;
+  stage2CityReady388=true;stage2Ready=true;
+  if(!stage2AssetsValid494())throw new Error('画像の準備状態を確認できませんでした');
+  return true;
+ }).catch(e=>{
+  stage2CityReady388=false;stage2Ready=false;
+  // Failed loaders must never keep a rejected promise for the retry.
+  if(st.status['商店街背景']==='失敗')stage2Loading=null;
+  if(st.status['菅原孝標女']==='失敗')saraLoading=null;
+  if(st.status['勾玉']==='失敗')powerItemLoading105=null;
+  console.error('[V494] 松原市２素材読み込み失敗',e);
+  throw e;
+ }).finally(()=>{
+  stage2EntryPromise387=null;stage2PreloadObservers494.clear();
+ });
+ stage2PreloadReport494();
+ return stage2EntryPromise387;
+}
+// Preload while the epilogue is visible, never block novel text or show an overlay.
+// A resumed novel uses startEpilogue() and therefore follows the same path.
+function warmStage2DuringNovel494(){
+ window.setTimeout(()=>{
+  if(screen!=='prologue'||storyKind!=='ending')return;
+  prepareStage2Assets494().catch(()=>{}); // Entry displays the error and retry button.
+ },90);
+}
+function startStage2Map(room=0,practice=false){
+ if(!ready)return false;
+ stage2PendingRoom387=room;stage2PendingPractice387=practice;
+ if(!stage2AssetsValid494()){
+  const request=++stage2EntryRequest494;
+  stage2EntryNotice387('松原市２の画像を確認しています');
+  prepareStage2Assets494((message)=>{if(request===stage2EntryRequest494)stage2EntryNotice387(message);})
+   .then(()=>{if(request!==stage2EntryRequest494)return;
+    stage2EntryNotice387('');startStage2Map(stage2PendingRoom387,stage2PendingPractice387);
+   })
+   .catch(e=>{if(request!==stage2EntryRequest494)return;
+    stage2EntryNotice387('松原市２の読み込みが完了しませんでした。 ／ '+String(e?.message||e)+'／ 再読み込みしてください。',true);
+   });
+  return true;
+ }
+ ++stage2EntryRequest494;
  stage2EntryNotice387('');previewOnly106=false;
- const score=practice?0:(game?.score||0),training=!!practice;enableAudio();clearResult=null;prologueEl.hidden=true;game=createStage2MapGame(score,room);game.practice=training;
+ const score=practice?0:(game?.score||0),training=!!practice;
+ enableAudio();clearResult=null;prologueEl.hidden=true;
+ game=createStage2MapGame(score,room);game.practice=training;
  resetInput();setScreen('play');updateUI();byId('toast').classList.remove('visible');canvas.focus({preventScroll:true});
+ return true;
 }
 function beginStage2Exit(g){
  const m=g.map,room=STAGE2_ROOMS[m.room];if(m.transition||room.right===null)return false;
@@ -8088,14 +8154,7 @@ const SceneEntry394=(()=>{
   im.src=src;
  });}
  function extra(city){
-  if(city==='matsu2'){
-   // [V484] Once all six optional groups were prepared, the stage holds
-   // strong references to their images. Replaying the city does not require
-   // allocating and decoding duplicate instances of the same artwork.
-   if(stage2CityReady388&&stage2Ready&&stage2Images.length>=2&&saraArt&&saraBookArt&&mirrorArt&&crisisArt&&rushImages.echo)return Promise.resolve();
-   return Promise.all([loadStage2Maps(),loadSaraArt(),loadSaraBook(),loadMirrorArt(),loadRushArt(),loadPowerItem105()])
-    .then(()=>{stage2Ready=true;stage2CityReady388=true;});
-  }
+  if(city==='matsu2')return prepareStage2Assets494();
   if(city==='yao')return K149.ready?Promise.resolve():loadKenko149();
   if(city==='fuji')return Promise.all([KYOKAI131.ready?Promise.resolve():loadKyokai131(),load132()]);
   if(city==='sakai1')return Promise.all([S163.ready?Promise.resolve():loadSaikaku163(),load166(),load167()]);
@@ -11191,7 +11250,7 @@ function titleAssetError382(group,error){
  const record={group,message:String(error?.message||error),time:new Date().toISOString()};
  TITLE_ASSET_ERRORS382.push(record);console.error('[V382] asset group:',group,error);
 }
-window.tsukumodoImageDiagnostics382=()=>({titleReady:ready,backgroundReady:bgReady,stageAssetsReady:stage2Ready,stage2EntryLoading:!!stage2EntryPromise387,artReady,cutinReady,errors:[...TITLE_ASSET_ERRORS382],preflight:typeof StagePreflight379!=='undefined'&&StagePreflight379.diagnostics?StagePreflight379.diagnostics():null});
+window.tsukumodoImageDiagnostics382=()=>({titleReady:ready,backgroundReady:bgReady,stageAssetsReady:stage2Ready,stage2EntryLoading:!!stage2EntryPromise387,stage2Ready494:stage2AssetsValid494(),artReady,cutinReady,errors:[...TITLE_ASSET_ERRORS382],preflight:typeof StagePreflight379!=='undefined'&&StagePreflight379.diagnostics?StagePreflight379.diagnostics():null});
 // [V484] Matsubara 2 backgrounds, Sara, mirrors and rush figures are lazy:
 // SceneEntry394 / startStage2Map load them at the city's entry, not while the
 // five boot assets (including both BGMs) are competing for network bandwidth.

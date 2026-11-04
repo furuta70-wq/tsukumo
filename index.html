@@ -5445,14 +5445,20 @@ if(typeof ResizeObserver!=='undefined')new ResizeObserver(fitStage).observe(byId
 window.visualViewport?.addEventListener('resize',()=>{resetInput();fitStage();});
 function updateSound(){if(audioMaster&&audio)audioMaster.gain.setTargetAtTime(muted?0:.8,audio.currentTime,.02);byId('sound').textContent=muted?'音 OFF':'音 ON';byId('sound').setAttribute('aria-pressed',String(!muted));}
 updateSound();
-function enableAudio(){if(muted)return;try{if(!audio){audio=new(window.AudioContext||window.webkitAudioContext)();const master=audioMaster=audio.createGain(),limiter=audio.createDynamicsCompressor();master.gain.value=.8;limiter.threshold.value=-12;limiter.knee.value=10;limiter.ratio.value=6;limiter.attack.value=.004;limiter.release.value=.18;audioMusic=audio.createGain();audioMusic.gain.value=.32;audioEffects=audio.createGain();audioEffects.gain.value=.9;audioMusic.connect(master);audioEffects.connect(master);master.connect(limiter);limiter.connect(audio.destination);}if(audio.state==='suspended')audio.resume();}catch{}}
+function enableAudio(){if(muted)return;try{if(!audio){audio=new(window.AudioContext||window.webkitAudioContext)();const master=audioMaster=audio.createGain(),limiter=audio.createDynamicsCompressor();master.gain.value=.8;limiter.threshold.value=-12;limiter.knee.value=10;limiter.ratio.value=6;limiter.attack.value=.004;limiter.release.value=.18;audioMusic=audio.createGain();audioMusic.gain.value=.32;audioEffects=audio.createGain();audioEffects.gain.value=.9;audioMusic.connect(master);audioEffects.connect(master);master.connect(limiter);limiter.connect(audio.destination);}if(audio.state==='suspended'||audio.state==='interrupted'){const pending=audio.resume();if(pending&&typeof pending.catch==='function')pending.catch(()=>{});}}catch{}}
 // [V415] 最初の操作で音声を有効化。音OFFの場合は開始しない。
 function unlockQuietAudio415(){
  if(bootActive417)return;
- if(!muted&&(!audio||audio.state==='suspended')&&['title','continue106','books106','world108','prologue'].includes(screen))enableAudio();
+ if(!muted&&(!audio||audio.state==='suspended'||audio.state==='interrupted'))enableAudio();
 }
 document.addEventListener('pointerdown',unlockQuietAudio415,{capture:true,passive:true});
 document.addEventListener('keydown',unlockQuietAudio415,{capture:true});
+// [V513] iPad/Safari may interrupt Web Audio after navigation or app switching.
+// Restore only when sound is enabled; user gestures remain the primary unlock path.
+function restoreAudio513(){if(muted||document.hidden||bootActive417)return;if(audio&&(audio.state==='suspended'||audio.state==='interrupted'))enableAudio();}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)restoreAudio513();});
+window.addEventListener('pageshow',restoreAudio513);
+window.addEventListener('focus',restoreAudio513);
 function duckMusic(level,duration){if(!audio)return;const now=audio.currentTime;musicDuckLevel=now<musicDuckUntil?Math.min(musicDuckLevel,level):level;musicDuckUntil=Math.max(musicDuckUntil,now+duration);}
 function setMusicLevel(level,fade=.035){if(!audioMusic||!audio||Math.abs(level-mixTarget)<.001)return;mixTarget=level;audioMusic.gain.cancelScheduledValues(audio.currentTime);audioMusic.gain.setTargetAtTime(level,audio.currentTime,fade);}
 function tone(freq,duration=.09,gain=.035,type='sine',end=null,delay=0,lane='sfx'){if(muted||!audio||audio.state!=='running')return;const now=audio.currentTime+delay,o=audio.createOscillator(),a=audio.createGain();o.type=type;o.frequency.setValueAtTime(freq,now);if(end)o.frequency.exponentialRampToValueAtTime(end,now+duration);a.gain.setValueAtTime(.0001,now);a.gain.exponentialRampToValueAtTime(gain,now+.006);a.gain.exponentialRampToValueAtTime(.0001,now+duration);o.connect(a).connect(lane==='music'?audioMusic:audioEffects);o.onended=()=>{o.disconnect();a.disconnect();};o.start(now);o.stop(now+duration+.01);}

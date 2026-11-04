@@ -9526,35 +9526,43 @@ let mapFocusToken300=0;
 function focusCity300(id){
  const city=worldCityById108.get(id);
  if(!city)return;
- const scale=worldFrame110().scale;
- const clearance=CITY_CLEARANCE300[id]||35;
- const required=12*Math.sqrt(city.name.length**2+1.22**2)/(2*clearance*.85);
- const targetK=Math.max(worldView108.k,Math.min(12,worldView108.k*required/Math.max(.001,scale)));
- const start={...worldView108},target={x:city.x,y:city.y,k:targetK};
- const sheet=byId('world-sheet110');
+ const start={...worldView108};
  const viewport=atlasViewport111();
- if(!sheet.hidden){
+ const sheet=byId('world-sheet110');
+ // [V514] Keep the current zoom: selecting a city should not unexpectedly magnify the map.
+ const target={x:city.x,y:city.y,k:start.k};
+ const scale=worldFrame110(start.k).scale;
+ const centerX=viewport.left+viewport.width/2;
+ const centerY=viewport.top+viewport.height/2;
+ let safeX=centerX,safeY=centerY;
+ if(sheet&&!sheet.hidden){
   const rect=sheet.getBoundingClientRect();
   const mobile=innerWidth<=600;
-  const targetScale=scale*targetK/Math.max(.001,start.k);
-  // Make room for the overlay without resizing the underlying map.
   if(mobile){
-   const visibleBottom=Math.min(viewport.top+viewport.height,rect.top);
-   const safeY=(viewport.top+visibleBottom)/2;
-   target.y=city.y+(safeY-(viewport.top+viewport.height/2))/Math.max(.001,targetScale)*-1;
+   // The sheet covers the bottom portion of the viewport.
+   const bottom=Math.max(viewport.top+viewport.height*.25,Math.min(viewport.top+viewport.height,rect.top));
+   safeY=(viewport.top+bottom)/2;
   }else{
-   const visibleRight=Math.min(viewport.left+viewport.width,rect.left);
-   const safeX=(viewport.left+visibleRight)/2;
-   target.x=city.x+(safeX-(viewport.left+viewport.width/2))/Math.max(.001,targetScale)*-1;
+   // The sheet covers the right portion of the viewport.
+   const right=Math.max(viewport.left+viewport.width*.25,Math.min(viewport.left+viewport.width,rect.left));
+   safeX=(viewport.left+right)/2;
   }
  }
+ // SVG screen coordinate: screenX = centerX + (city.x - view.x)*scale.
+ // Therefore view.x = city.x - (safeX-centerX)/scale (same for Y).
+ // Limit the focus shift to avoid empty expanses and sudden jumps.
+ const maxShiftPx=Math.min(155,viewport.width*.18,viewport.height*.25);
+ const dx=Math.max(-maxShiftPx,Math.min(maxShiftPx,safeX-centerX));
+ const dy=Math.max(-maxShiftPx,Math.min(maxShiftPx,safeY-centerY));
+ target.x=clamp(city.x-dx/Math.max(.001,scale),-100,1100);
+ target.y=clamp(city.y-dy/Math.max(.001,scale),-100,1100);
  const token=++mapFocusToken300,begin=performance.now();
  const duration=window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:410;
  const tick=now=>{
   if(token!==mapFocusToken300||screen!=='world108'||worldPointers108.size)return;
   const u=duration?Math.min(1,(now-begin)/duration):1;
   const e=1-Math.pow(1-u,3);
-  worldView108={x:start.x+(target.x-start.x)*e,y:start.y+(target.y-start.y)*e,k:start.k+(target.k-start.k)*e};
+  worldView108={x:start.x+(target.x-start.x)*e,y:start.y+(target.y-start.y)*e,k:start.k};
   applyWorldView108();
   if(u<1)requestAnimationFrame(tick);
  };
